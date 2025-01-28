@@ -1,0 +1,21 @@
+# Include recommended lints for Flutter
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    # Exclude generated files from analysis
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+
+linter:
+  rules:
+    # --- Essential Rules for Clean Code ---
+    avoid_print: true                # Discourage print() in favor of proper logging.
+    prefer_const_constructors: true  # Use const constructors where possible.
+    prefer_const_literals_to_create_immutables: true # Use const for list/map literals.
+    annotate_overrides: true         # Require @override for overridden methods.
+    prefer_final_locals: true        # Prefer final for local variables when possible.
+    sort_child_properties_last: true # For Flutter widgets, keep 'child' at the bottom.
+    public_member_api_docs: false    # Skip enforcing docs for public APIs (optional).
+    
