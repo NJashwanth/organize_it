@@ -14,7 +14,6 @@ class TaskRepository {
       tasks.add(TaskModel.fromMap(task, task['id']));
     }
     return tasks;
-
   }
 
   Future<void> addTask(TaskEntity task) async {
