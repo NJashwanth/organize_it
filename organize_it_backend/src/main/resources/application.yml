@@ -3,7 +3,7 @@ spring:
     name: organize_it_backend
   data:
     mongodb:
-      uri: mongodb+srv://jashwanthn066:HVnToAWSgq9ugqq4@organizeit.a1tsf.mongodb.net/organizeit?retryWrites=true&w=majority
+      uri: update_this
       database: organize_it
 server:
   port: 8080
