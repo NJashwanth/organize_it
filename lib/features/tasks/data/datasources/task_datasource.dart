@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:organize_it/features/tasks/data/models/task_model.dart';
 import 'package:organize_it/features/tasks/domain/entities/task.dart';
 import 'package:organize_it/services/dio_service.dart';
@@ -8,11 +7,10 @@ class TaskDatasource {
 
   Future<List<TaskEntity>> getTasks() async {
     try {
-      debugPrint('Fetching tasks from API...');
       final response = await _dioService.getRequest('/tasks');
       final List<TaskEntity> tasks = <TaskEntity>[];
       for (final task in response.data) {
-        tasks.add(TaskModel.fromMap(task, task['id']));
+        tasks.add(TaskModel.fromMap(task, task['id']).toEntity());
       }
       return tasks;
     } on Exception catch (e) {
@@ -26,7 +24,7 @@ class TaskDatasource {
           .getRequest('/tasks', queryParameters: {'date': date});
       final List<TaskEntity> tasks = <TaskEntity>[];
       for (final task in response.data) {
-        tasks.add(TaskModel.fromMap(task, task['id']));
+        tasks.add(TaskModel.fromMap(task, task['id']).toEntity());
       }
       return tasks;
     } on Exception catch (e) {
@@ -35,8 +33,8 @@ class TaskDatasource {
   }
 
   Future<void> addTask(TaskEntity task) async {
-    final Map<String, dynamic> data = (task as TaskModel).toMap();
-    await _dioService.postRequest('/tasks', data: data);
+    final TaskModel taskModel = task as TaskModel;
+    await _dioService.postRequest('/tasks', data: taskModel.toJson());
   }
 
   Future<void> updateTask(String id, Map<String, dynamic> updates) async {
@@ -49,7 +47,11 @@ class TaskDatasource {
   }
 
   Future<TaskEntity> getTaskById(String id) async {
-    final response = await _dioService.getRequest('/tasks/$id');
-    return TaskModel.fromMap(response.data, id);
+    try {
+      final response = await _dioService.getRequest('/tasks/$id');
+      return TaskModel.fromMap(response.data, id).toEntity();
+    } on Exception catch (e) {
+      throw Exception('Failed to load task: $e');
+    }
   }
 }
