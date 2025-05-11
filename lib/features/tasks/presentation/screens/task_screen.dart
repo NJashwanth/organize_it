@@ -3,11 +3,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:organize_it/features/tasks/domain/entities/task.dart';
 import '../providers/task_provider.dart';
 
-class TaskScreen extends ConsumerWidget {
+class TaskScreen extends ConsumerStatefulWidget {
   const TaskScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TaskScreen> createState() => _TaskScreenState();
+}
+
+class _TaskScreenState extends ConsumerState<TaskScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Call loadTasks() on widget initialization
+    Future.microtask(() => ref.read(taskProvider.notifier).loadTasks());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final List<TaskEntity> tasks = ref.watch(taskProvider);
 
     return Scaffold(
@@ -26,7 +38,7 @@ class TaskScreen extends ConsumerWidget {
                     onChanged: (bool? value) {
                       ref
                           .read(taskProvider.notifier)
-                          .updateTask(task.id, <String,dynamic >{'isCompleted': value});
+                          .updateTask(task.id, {'isCompleted': value});
                     },
                   ),
                   onLongPress: () {

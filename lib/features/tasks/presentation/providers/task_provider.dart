@@ -26,6 +26,7 @@ class TaskNotifier extends StateNotifier<List<TaskEntity>> {
   }
 
   Future<void> updateTask(String id, Map<String, dynamic> updates) async {
+
     await repository.updateTask(id, updates);
     await loadTasks();
   }
@@ -34,4 +35,7 @@ class TaskNotifier extends StateNotifier<List<TaskEntity>> {
     await repository.deleteTask(id);
     await loadTasks();
   }
+
+
+
 }

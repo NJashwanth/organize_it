@@ -15,7 +15,8 @@ class TaskModel extends TaskEntity {
       title: map['title'] ?? '',
       description: map['description'] ?? '',
       isCompleted: map['isCompleted'] ?? false,
-      priority: TaskPriority.values[map['priority'] ?? 1],
+      priority:
+          TaskPriority.values[int.tryParse(map['priority'].toString()) ?? 1],
     );
   }
 
