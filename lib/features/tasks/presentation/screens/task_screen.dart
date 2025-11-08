@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:organize_it/features/tasks/domain/entities/task.dart';
 import '../providers/task_provider.dart';
+import '../widgets/task_list_tile.dart';
 
 class TaskScreen extends ConsumerStatefulWidget {
   const TaskScreen({super.key});
@@ -37,55 +38,13 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
               itemBuilder: (BuildContext context, int index) {
                 final TaskEntity task = tasks[index];
 
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      verticalDirection: VerticalDirection.down,
-                      spacing: 2,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(task.title),
-                            Text(task.description),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          spacing: 3,
-                          children: [
-                            Checkbox(
-                              value: task.isCompleted,
-                              onChanged: (bool? value) {
-                                notifier.updateTask(
-                                  task,
-                                  isCompleted: value,
-                                );
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                // Handle edit action
-                                _showEditDialog(task);
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                // Handle delete action
-                                notifier.deleteTask(task.id);
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                return TaskListTile(
+                  task: task,
+                  onToggleComplete: (value) async {
+                    await notifier.updateTask(task, isCompleted: value);
+                  },
+                  onEdit: () => _showEditDialog(task),
+                  onDelete: () => notifier.deleteTask(task.id),
                 );
               },
             ),
