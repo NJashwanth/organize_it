@@ -17,7 +17,23 @@ class TaskEntity extends Equatable {
     required this.priority,
   });
 
+  // Add a copyWith method to create a new instance with updated values
+  TaskEntity copyWith({
+    String? id,
+    String? title,
+    String? description,
+    bool? isCompleted,
+    TaskPriority? priority,
+  }) {
+    return TaskEntity(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      isCompleted: isCompleted ?? this.isCompleted,
+      priority: priority ?? this.priority,
+    );
+  }
+
   @override
-  List<Object?> get props =>
-      <Object?>[id, title, description, isCompleted, priority];
+  List<Object?> get props => <Object?>[id, title, description, isCompleted, priority];
 }
