@@ -26,7 +26,6 @@ abstract class TaskModel with _$TaskModel {
       priority: _parsePriority(map['priority']),
     );
   }
-  
 }
 
 // Extension for custom methods
@@ -56,7 +55,9 @@ TaskPriority _parsePriority(dynamic raw) {
   // If it's an int or a numeric string, try parsing as an index
   try {
     final intIndex = raw is int ? raw : int.tryParse(raw.toString());
-    if (intIndex != null && intIndex >= 0 && intIndex < TaskPriority.values.length) {
+    if (intIndex != null &&
+        intIndex >= 0 &&
+        intIndex < TaskPriority.values.length) {
       return TaskPriority.values[intIndex];
     }
   } catch (_) {}
