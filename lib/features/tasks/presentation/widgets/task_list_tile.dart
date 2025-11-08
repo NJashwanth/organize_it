@@ -19,16 +19,31 @@ class TaskListTile extends StatelessWidget {
     required this.onDelete,
   });
 
-  Color _priorityColor(TaskPriority? priority) {
+  Color _priorityColor(TaskPriority? priority, [BuildContext? context]) {
+    if (context == null) {
+      // Fallback colors when context is not available
+      switch (priority) {
+        case TaskPriority.high:
+          return Colors.redAccent;
+        case TaskPriority.medium:
+          return Colors.orangeAccent;
+        case TaskPriority.low:
+          return Colors.green;
+        default:
+          return Colors.grey;
+      }
+    }
+
+    final theme = Theme.of(context);
     switch (priority) {
       case TaskPriority.high:
-        return Colors.redAccent;
+        return theme.colorScheme.error;
       case TaskPriority.medium:
-        return Colors.orangeAccent;
+        return theme.colorScheme.tertiary;
       case TaskPriority.low:
-        return Colors.green;
+        return theme.colorScheme.primary;
       default:
-        return Colors.grey;
+        return theme.colorScheme.outline;
     }
   }
 
@@ -37,13 +52,18 @@ class TaskListTile extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Card(
-      elevation: task.isCompleted ? 1 : 2,
-      color: task.isCompleted ? Colors.grey[50] : null,
+      elevation: task.isCompleted ? 0 : 1,
+      color: task.isCompleted
+          ? theme.colorScheme.surfaceVariant.withOpacity(0.5)
+          : theme.colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: task.isCompleted
-            ? BorderSide(color: Colors.grey[300]!, width: 1)
-            : BorderSide.none,
+        side: BorderSide(
+          color: task.isCompleted
+              ? theme.colorScheme.outlineVariant
+              : theme.colorScheme.outline.withOpacity(0.2),
+          width: task.isCompleted ? 1 : 0.5,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -56,7 +76,7 @@ class TaskListTile extends StatelessWidget {
               height: 12,
               margin: const EdgeInsets.only(top: 6, right: 12),
               decoration: BoxDecoration(
-                color: _priorityColor(task.priority),
+                color: _priorityColor(task.priority, context),
                 shape: BoxShape.circle,
               ),
             ),
@@ -72,7 +92,9 @@ class TaskListTile extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       decoration:
                           task.isCompleted ? TextDecoration.lineThrough : null,
-                      color: task.isCompleted ? Colors.grey[600] : null,
+                      color: task.isCompleted
+                          ? theme.colorScheme.onSurfaceVariant.withOpacity(0.7)
+                          : theme.colorScheme.onSurface,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -81,9 +103,8 @@ class TaskListTile extends StatelessWidget {
                     task.description,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: task.isCompleted
-                          ? Colors.grey[500]
-                          : theme.textTheme.bodySmall?.color
-                              ?.withAlpha((0.9 * 255).round()),
+                          ? theme.colorScheme.onSurfaceVariant.withOpacity(0.6)
+                          : theme.colorScheme.onSurfaceVariant,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -91,25 +112,45 @@ class TaskListTile extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Chip(
-                        label: Text(
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _priorityColor(task.priority, context)
+                              .withOpacity(
+                            task.isCompleted ? 0.6 : 0.9,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
                           task.priority
                               .toString()
                               .split('.')
                               .last
                               .toUpperCase(),
-                          style: const TextStyle(
-                              fontSize: 12, color: Colors.white),
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                        backgroundColor: _priorityColor(task.priority),
-                        visualDensity: VisualDensity.compact,
                       ),
                       const SizedBox(width: 8),
                       if (task.isCompleted) ...[
-                        const Icon(Icons.check_circle,
-                            color: Colors.green, size: 18),
+                        Icon(
+                          Icons.check_circle_outline,
+                          color: theme.colorScheme.primary.withOpacity(0.7),
+                          size: 16,
+                        ),
                         const SizedBox(width: 4),
-                        const Text('Completed', style: TextStyle(fontSize: 12)),
+                        Text(
+                          'Completed',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant
+                                .withOpacity(0.8),
+                          ),
+                        ),
                       ],
                     ],
                   )
@@ -120,34 +161,64 @@ class TaskListTile extends StatelessWidget {
             // Actions: checkbox + menu
             Column(
               children: [
-                Checkbox(
-                  value: task.isCompleted,
-                  onChanged: onToggleComplete,
+                Transform.scale(
+                  scale: 0.9,
+                  child: Checkbox(
+                    value: task.isCompleted,
+                    onChanged: onToggleComplete,
+                    activeColor: theme.colorScheme.primary.withOpacity(0.9),
+                    checkColor: theme.colorScheme.onPrimary,
+                  ),
                 ),
                 PopupMenuButton<String>(
                   onSelected: (v) {
                     if (v == 'edit') return onEdit();
                     if (v == 'delete') return onDelete();
                   },
-                  itemBuilder: (context) => const [
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 20,
+                  ),
+                  itemBuilder: (context) => [
                     PopupMenuItem(
-                        value: 'edit',
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit),
-                            SizedBox(width: 8),
-                            Text('Edit')
-                          ],
-                        )),
+                      value: 'edit',
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.edit_outlined,
+                            size: 20,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Edit',
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: theme.colorScheme.onSurface,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     PopupMenuItem(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                            Icon(Icons.delete),
-                            SizedBox(width: 8),
-                            Text('Delete')
-                          ],
-                        )),
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.delete_outline,
+                            size: 20,
+                            color: theme.colorScheme.error,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Delete',
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: theme.colorScheme.error,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ],
