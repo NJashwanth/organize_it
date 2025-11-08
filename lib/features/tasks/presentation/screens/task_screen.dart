@@ -33,22 +33,58 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
             return const Center(child: Text('No tasks found!'));
           }
 
+          // Split tasks into active and completed
+          final activeTasks = tasks.where((t) => !t.isCompleted).toList()
+            ..sort((a, b) => b.priority.index.compareTo(a.priority.index));
+          final completedTasks = tasks.where((t) => t.isCompleted).toList()
+            ..sort((a, b) => b.priority.index.compareTo(a.priority.index));
+
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (BuildContext context, int index) {
-                final TaskEntity task = tasks[index];
+            child: ListView(
+              children: [
+                // Active Tasks Section
+                if (activeTasks.isNotEmpty) ...[
+                  Text('Active Tasks',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.primaryColor,
+                      )),
+                  const SizedBox(height: 8),
+                  ...activeTasks.map((task) => TaskListTile(
+                        task: task,
+                        onToggleComplete: (value) {
+                          notifier.updateTask(task, isCompleted: value);
+                        },
+                        onEdit: () => _showEditDialog(task),
+                        onDelete: () => notifier.deleteTask(task.id),
+                      )),
+                ],
 
-                return TaskListTile(
-                  task: task,
-                  onToggleComplete: (value) async {
-                    await notifier.updateTask(task, isCompleted: value);
-                  },
-                  onEdit: () => _showEditDialog(task),
-                  onDelete: () => notifier.deleteTask(task.id),
-                );
-              },
+                // Completed Tasks Section
+                if (completedTasks.isNotEmpty) ...[
+                  const SizedBox(height: 24),
+                  ExpansionTile(
+                    title: Text(
+                      'Completed Tasks (${completedTasks.length})',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    children: completedTasks
+                        .map((task) => TaskListTile(
+                              task: task,
+                              onToggleComplete: (value) {
+                                notifier.updateTask(task, isCompleted: value);
+                              },
+                              onEdit: () => _showEditDialog(task),
+                              onDelete: () => notifier.deleteTask(task.id),
+                            ))
+                        .toList(),
+                  ),
+                ],
+              ],
             ),
           );
         },

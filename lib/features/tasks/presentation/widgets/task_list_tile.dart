@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/task.dart';
 
-typedef TaskToggleCallback = Future<void> Function(bool? value);
+typedef TaskToggleCallback = void Function(bool? value);
 typedef TaskVoidCallback = void Function();
 
 /// Reusable tile for displaying a TaskEntity with improved visuals.
@@ -37,8 +37,14 @@ class TaskListTile extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: task.isCompleted ? 1 : 2,
+      color: task.isCompleted ? Colors.grey[50] : null,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: task.isCompleted
+            ? BorderSide(color: Colors.grey[300]!, width: 1)
+            : BorderSide.none,
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Row(
@@ -66,6 +72,7 @@ class TaskListTile extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       decoration:
                           task.isCompleted ? TextDecoration.lineThrough : null,
+                      color: task.isCompleted ? Colors.grey[600] : null,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -73,8 +80,10 @@ class TaskListTile extends StatelessWidget {
                   Text(
                     task.description,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.textTheme.bodySmall?.color
-                          ?.withAlpha((0.9 * 255).round()),
+                      color: task.isCompleted
+                          ? Colors.grey[500]
+                          : theme.textTheme.bodySmall?.color
+                              ?.withAlpha((0.9 * 255).round()),
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
