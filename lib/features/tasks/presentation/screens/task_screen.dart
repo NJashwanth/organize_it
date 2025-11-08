@@ -14,13 +14,13 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(taskProvider.notifier).loadTasks());
+    Future.microtask(() => ref.read(tasksProvider.notifier).loadTasks());
   }
 
   @override
   Widget build(BuildContext context) {
-    final AsyncValue<List<TaskEntity>> tasksValue = ref.watch(taskProvider);
-    final notifier = ref.read(taskProvider.notifier);
+    final AsyncValue<List<TaskEntity>> tasksValue = ref.watch(tasksProvider);
+    final notifier = ref.read(tasksProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Tasks')),
@@ -126,7 +126,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
 
     TaskPriority? selectedPriority = task.priority;
 
-    final provider = ref.read(taskProvider.notifier);
+    final provider = ref.read(tasksProvider.notifier);
 
     await showDialog(
       context: context,

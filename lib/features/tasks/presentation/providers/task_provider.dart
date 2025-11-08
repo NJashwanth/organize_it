@@ -1,23 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../data/repositories/task_repository.dart';
 import '../../domain/entities/task.dart';
 import '../../data/models/task_model.dart';
 
-final Provider<TaskRepository> taskRepositoryProvider =
-    Provider((ref) => TaskRepository());
+part 'task_provider.g.dart';
 
-class TaskNotifier extends Notifier<AsyncValue<List<TaskEntity>>> {
-  late final TaskRepository repository;
+@riverpod
+TaskRepository taskRepository(Ref ref) => TaskRepository();
 
+@riverpod
+class Tasks extends _$Tasks {
   @override
   AsyncValue<List<TaskEntity>> build() {
-    repository = ref.read(taskRepositoryProvider);
     return const AsyncValue.data(<TaskEntity>[]);
   }
 
   Future<void> loadTasks() async {
     state = const AsyncValue.loading();
     try {
+      final repository = ref.read(taskRepositoryProvider);
       final tasks = await repository.getTasks();
       state = AsyncValue.data(tasks);
     } catch (e, st) {
@@ -27,6 +29,7 @@ class TaskNotifier extends Notifier<AsyncValue<List<TaskEntity>>> {
 
   Future<void> addTask(TaskEntity task) async {
     try {
+      final repository = ref.read(taskRepositoryProvider);
       await repository.addTask(task);
       await loadTasks(); // Reload tasks after adding
     } catch (e, st) {
@@ -40,6 +43,7 @@ class TaskNotifier extends Notifier<AsyncValue<List<TaskEntity>>> {
       bool? isCompleted,
       TaskPriority? priority}) async {
     try {
+      final repository = ref.read(taskRepositoryProvider);
       // Use copyWith to update fields
       final updatedTask = task.copyWith(
         title: title ?? task.title,
@@ -69,6 +73,7 @@ class TaskNotifier extends Notifier<AsyncValue<List<TaskEntity>>> {
 
   Future<void> deleteTask(String id) async {
     try {
+      final repository = ref.read(taskRepositoryProvider);
       await repository.deleteTask(id);
       await loadTasks(); // Reload tasks after deletion
     } catch (e, st) {
@@ -76,8 +81,3 @@ class TaskNotifier extends Notifier<AsyncValue<List<TaskEntity>>> {
     }
   }
 }
-
-final taskProvider =
-    NotifierProvider<TaskNotifier, AsyncValue<List<TaskEntity>>>(
-  TaskNotifier.new,
-);
