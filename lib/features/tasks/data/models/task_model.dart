@@ -23,8 +23,7 @@ abstract class TaskModel with _$TaskModel {
       title: map['title'] ?? '',
       description: map['description'] ?? '',
       isCompleted: map['isCompleted'] ?? false,
-      priority:
-          TaskPriority.values[int.tryParse(map['priority'].toString()) ?? 1],
+      priority: _parsePriority(map['priority']),
     );
   }
   
@@ -48,4 +47,28 @@ extension TaskModelX on TaskModel {
       priority: priority,
     );
   }
+}
+
+// Helper to robustly parse priority values coming from various backend formats
+TaskPriority _parsePriority(dynamic raw) {
+  if (raw == null) return TaskPriority.low;
+
+  // If it's an int or a numeric string, try parsing as an index
+  try {
+    final intIndex = raw is int ? raw : int.tryParse(raw.toString());
+    if (intIndex != null && intIndex >= 0 && intIndex < TaskPriority.values.length) {
+      return TaskPriority.values[intIndex];
+    }
+  } catch (_) {}
+
+  // If it's a string, try to match by name (case-insensitive)
+  final rawStr = raw.toString().toLowerCase();
+  for (final p in TaskPriority.values) {
+    if (p.toString().split('.').last.toLowerCase() == rawStr) {
+      return p;
+    }
+  }
+
+  // Fallback
+  return TaskPriority.low;
 }

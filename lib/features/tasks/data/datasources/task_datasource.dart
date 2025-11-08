@@ -33,8 +33,15 @@ class TaskDatasource {
   }
 
   Future<void> addTask(TaskEntity task) async {
-    final TaskModel taskModel = task as TaskModel;
-    await _dioService.postRequest('/tasks', data: taskModel.toJson());
+    // Convert TaskEntity to TaskModel for serialization
+    final TaskModel taskModel = TaskModel(
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      isCompleted: task.isCompleted,
+      priority: task.priority,
+    );
+    await _dioService.postRequest('/tasks', data: taskModel.toMap());
   }
 
   Future<void> updateTask(String id, Map<String, dynamic> updates) async {
