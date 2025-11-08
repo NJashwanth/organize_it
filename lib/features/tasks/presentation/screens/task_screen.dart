@@ -19,73 +19,102 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<TaskEntity> tasks = ref.watch(taskProvider);
+    final AsyncValue<List<TaskEntity>> tasksValue = ref.watch(taskProvider);
     final notifier = ref.read(taskProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Tasks')),
-      body: tasks.isEmpty
-          ? const Center(child: Text('No tasks found!'))
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView.builder(
-                itemCount: tasks.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final TaskEntity task = tasks[index];
+      body: tasksValue.when(
+        data: (tasks) {
+          if (tasks.isEmpty) {
+            return const Center(child: Text('No tasks found!'));
+          }
 
-                  return Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        verticalDirection: VerticalDirection.down,
-                        spacing: 2,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(task.title),
-                              Text(task.description),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: 3,
-                            children: [
-                              Checkbox(
-                                value: task.isCompleted,
-                                onChanged: (bool? value) {
-                                  notifier.updateTask(
-                                    task,
-                                    isCompleted: value,
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () {
-                                  // Handle edit action
-                                  _showEditDialog(task);
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  // Handle delete action
-                                  notifier.deleteTask(task.id);
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView.builder(
+              itemCount: tasks.length,
+              itemBuilder: (BuildContext context, int index) {
+                final TaskEntity task = tasks[index];
+
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      verticalDirection: VerticalDirection.down,
+                      spacing: 2,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(task.title),
+                            Text(task.description),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 3,
+                          children: [
+                            Checkbox(
+                              value: task.isCompleted,
+                              onChanged: (bool? value) {
+                                notifier.updateTask(
+                                  task,
+                                  isCompleted: value,
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () {
+                                // Handle edit action
+                                _showEditDialog(task);
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                // Handle delete action
+                                notifier.deleteTask(task.id);
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                const SizedBox(height: 12),
+                const Text('Something went wrong',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
+                Text(error.toString()),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () => notifier.loadTasks(),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
