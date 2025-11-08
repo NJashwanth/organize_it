@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: organize_it_backend
+  data:
+    mongodb:
+      uri: update_this
+      database: organize_it
+server:
+  port: 8080
