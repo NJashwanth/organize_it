@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:organize_it/features/tasks/domain/entities/task.dart';
 import '../providers/task_provider.dart';
+import '../widgets/task_edit_dialog.dart';
 import '../widgets/task_list_tile.dart';
 
 class TaskScreen extends ConsumerStatefulWidget {
@@ -20,6 +21,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final AsyncValue<List<TaskEntity>> tasksValue = ref.watch(tasksProvider);
     final notifier = ref.read(tasksProvider.notifier);
 
@@ -57,11 +59,16 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                Icon(Icons.error_outline,
+                    size: 64, color: theme.colorScheme.error),
                 const SizedBox(height: 12),
-                const Text('Something went wrong',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text(
+                  'Something went wrong',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.error,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Text(error.toString()),
                 const SizedBox(height: 12),
@@ -78,74 +85,21 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
   }
 
   Future<void> _showEditDialog(TaskEntity task) async {
-    final TextEditingController titleController =
-        TextEditingController(text: task.title);
-    final TextEditingController descriptionController =
-        TextEditingController(text: task.description);
-
-    TaskPriority? selectedPriority = task.priority;
-
     final provider = ref.read(tasksProvider.notifier);
 
-    await showDialog(
+    final result = await showDialog<TaskEditResult>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Edit Task'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
-              ),
-              TextField(
-                controller: descriptionController,
-                decoration: const InputDecoration(labelText: 'Description'),
-              ),
-              DropdownButton<TaskPriority>(
-                value: selectedPriority,
-                onChanged: (TaskPriority? newValue) {
-                  setState(() {
-                    selectedPriority = newValue;
-                  });
-                },
-                items: TaskPriority.values
-                    .map<DropdownMenuItem<TaskPriority>>((TaskPriority value) {
-                  return DropdownMenuItem<TaskPriority>(
-                    value: value,
-                    child: Text(value.toString().split('.').last.toUpperCase()),
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                // Close the dialog
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Update the task with the new title, description, and priority
-                provider.updateTask(
-                  task,
-                  title: titleController.text,
-                  description: descriptionController.text,
-                  priority: selectedPriority,
-                );
-
-                // Close the dialog
-                Navigator.pop(context);
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
+      builder: (context) => TaskEditDialog(task: task),
     );
+
+    if (result != null) {
+      // apply changes using provider
+      provider.updateTask(
+        task,
+        title: result.title,
+        description: result.description,
+        priority: result.priority,
+      );
+    }
   }
 }
