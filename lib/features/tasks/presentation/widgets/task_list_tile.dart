@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../domain/entities/task.dart';
 
 typedef TaskToggleCallback = void Function(bool? value);
@@ -19,49 +20,36 @@ class TaskListTile extends StatelessWidget {
     required this.onDelete,
   });
 
-  Color _priorityColor(TaskPriority? priority, [BuildContext? context]) {
-    if (context == null) {
-      // Fallback colors when context is not available
-      switch (priority) {
-        case TaskPriority.high:
-          return Colors.redAccent;
-        case TaskPriority.medium:
-          return Colors.orangeAccent;
-        case TaskPriority.low:
-          return Colors.green;
-        default:
-          return Colors.grey;
-      }
-    }
-
-    final theme = Theme.of(context);
+  Color _priorityColor(TaskPriority? priority, BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     switch (priority) {
       case TaskPriority.high:
-        return theme.colorScheme.error;
+        return colors.highPriority;
       case TaskPriority.medium:
-        return theme.colorScheme.tertiary;
+        return colors.mediumPriority;
       case TaskPriority.low:
-        return theme.colorScheme.primary;
+        return colors.lowPriority;
       default:
-        return theme.colorScheme.outline;
+        return colors.outline;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    final texts = theme.textTheme;
 
     return Card(
       elevation: task.isCompleted ? 0 : 1,
       color: task.isCompleted
-          ? theme.colorScheme.surfaceVariant.withOpacity(0.5)
-          : theme.colorScheme.surface,
+          ? colors.completedTileBackground
+          : colors.tileBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: task.isCompleted
-              ? theme.colorScheme.outlineVariant
-              : theme.colorScheme.outline.withOpacity(0.2),
+          color:
+              task.isCompleted ? colors.completedTileBorder : colors.tileBorder,
           width: task.isCompleted ? 1 : 0.5,
         ),
       ),
@@ -88,24 +76,26 @@ class TaskListTile extends StatelessWidget {
                 children: [
                   Text(
                     task.title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      decoration:
-                          task.isCompleted ? TextDecoration.lineThrough : null,
-                      color: task.isCompleted
-                          ? theme.colorScheme.onSurfaceVariant.withOpacity(0.7)
-                          : theme.colorScheme.onSurface,
-                    ),
+                    style: task.isCompleted
+                        ? texts.listTitle.copyWith(
+                            decoration: TextDecoration.lineThrough,
+                            color: colors.statusCompleted,
+                          )
+                        : texts.listTitle.copyWith(
+                            color: colors.primaryText,
+                          ),
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 6),
                   Text(
                     task.description,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: task.isCompleted
-                          ? theme.colorScheme.onSurfaceVariant.withOpacity(0.6)
-                          : theme.colorScheme.onSurfaceVariant,
-                    ),
+                    style: task.isCompleted
+                        ? texts.listDescription.copyWith(
+                            color: colors.disabledText,
+                          )
+                        : texts.listDescription.copyWith(
+                            color: colors.secondaryText,
+                          ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

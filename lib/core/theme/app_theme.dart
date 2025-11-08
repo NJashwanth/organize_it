@@ -1,5 +1,64 @@
 import 'package:flutter/material.dart';
 
+/// Extension to provide semantic text styles
+extension AppTextStyleX on TextTheme {
+  // Headers
+  TextStyle get header1 => displayLarge!;
+  TextStyle get header2 => displayMedium!;
+  TextStyle get header3 => displaySmall!;
+
+  // Titles
+  TextStyle get title1 => titleLarge!.copyWith(fontWeight: FontWeight.w600);
+  TextStyle get title2 => titleMedium!.copyWith(fontWeight: FontWeight.w600);
+  TextStyle get title3 => titleSmall!.copyWith(fontWeight: FontWeight.w500);
+
+  // Body text
+  TextStyle get body1 => bodyLarge!;
+  TextStyle get body2 => bodyMedium!;
+  TextStyle get body3 => bodySmall!;
+
+  // Labels
+  TextStyle get label1 => labelLarge!;
+  TextStyle get label2 => labelMedium!;
+  TextStyle get label3 => labelSmall!;
+
+  // Special styles
+  TextStyle get listTitle => titleMedium!.copyWith(fontWeight: FontWeight.w600);
+  TextStyle get listDescription => bodyMedium!;
+  TextStyle get sectionHeader =>
+      titleLarge!.copyWith(fontWeight: FontWeight.bold);
+  TextStyle get caption => bodySmall!;
+  TextStyle get tag => labelSmall!.copyWith(fontWeight: FontWeight.w500);
+}
+
+/// Extension to provide semantic colors
+extension AppColorSchemeX on ColorScheme {
+  // Background colors
+  Color get tileBackground => surface;
+  Color get completedTileBackground => surfaceVariant.withOpacity(0.5);
+
+  // Text colors
+  Color get primaryText => onSurface;
+  Color get secondaryText => onSurfaceVariant;
+  Color get disabledText => onSurfaceVariant.withOpacity(0.6);
+
+  // Priority colors using theme's color system with distinct colors
+  Color get highPriority =>
+      error; // Critical tasks - error color for high visibility
+  Color get mediumPriority =>
+      tertiary; // Warning level - tertiary provides good distinction
+  Color get lowPriority =>
+      inversePrimary; // Subtle tasks - inverse primary for clear difference
+
+  // Status colors
+  Color get statusActive => primary;
+  Color get statusCompleted => onSurfaceVariant.withOpacity(0.7);
+
+  // Border colors
+  Color get tileBorder => outline.withOpacity(0.2);
+  Color get completedTileBorder => outlineVariant;
+}
+
 class AppTheme {
   // Brand Colors
   static const Color _primaryLight = Color(0xFF6750A4);
