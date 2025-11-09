@@ -18,7 +18,11 @@ mixin _$TaskModel {
   String get title;
   String get description;
   bool get isCompleted;
-  TaskPriority get priority;
+  TaskPriority get priority; // Backend fields
+  String? get groupId;
+  String get ownerId;
+  DateTime? get createdAt;
+  DateTime? get updatedAt;
 
   /// Create a copy of TaskModel
   /// with the given fields replaced by the non-null parameter values.
@@ -42,17 +46,23 @@ mixin _$TaskModel {
             (identical(other.isCompleted, isCompleted) ||
                 other.isCompleted == isCompleted) &&
             (identical(other.priority, priority) ||
-                other.priority == priority));
+                other.priority == priority) &&
+            (identical(other.groupId, groupId) || other.groupId == groupId) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, description, isCompleted, priority);
+  int get hashCode => Object.hash(runtimeType, id, title, description,
+      isCompleted, priority, groupId, ownerId, createdAt, updatedAt);
 
   @override
   String toString() {
-    return 'TaskModel(id: $id, title: $title, description: $description, isCompleted: $isCompleted, priority: $priority)';
+    return 'TaskModel(id: $id, title: $title, description: $description, isCompleted: $isCompleted, priority: $priority, groupId: $groupId, ownerId: $ownerId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 }
 
@@ -66,7 +76,11 @@ abstract mixin class $TaskModelCopyWith<$Res> {
       String title,
       String description,
       bool isCompleted,
-      TaskPriority priority});
+      TaskPriority priority,
+      String? groupId,
+      String ownerId,
+      DateTime? createdAt,
+      DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -86,6 +100,10 @@ class _$TaskModelCopyWithImpl<$Res> implements $TaskModelCopyWith<$Res> {
     Object? description = null,
     Object? isCompleted = null,
     Object? priority = null,
+    Object? groupId = freezed,
+    Object? ownerId = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -108,6 +126,22 @@ class _$TaskModelCopyWithImpl<$Res> implements $TaskModelCopyWith<$Res> {
           ? _self.priority
           : priority // ignore: cast_nullable_to_non_nullable
               as TaskPriority,
+      groupId: freezed == groupId
+          ? _self.groupId
+          : groupId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ownerId: null == ownerId
+          ? _self.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: freezed == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _self.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -205,16 +239,32 @@ extension TaskModelPatterns on TaskModel {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String id, String title, String description,
-            bool isCompleted, TaskPriority priority)?
+    TResult Function(
+            String id,
+            String title,
+            String description,
+            bool isCompleted,
+            TaskPriority priority,
+            String? groupId,
+            String ownerId,
+            DateTime? createdAt,
+            DateTime? updatedAt)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _TaskModel() when $default != null:
-        return $default(_that.id, _that.title, _that.description,
-            _that.isCompleted, _that.priority);
+        return $default(
+            _that.id,
+            _that.title,
+            _that.description,
+            _that.isCompleted,
+            _that.priority,
+            _that.groupId,
+            _that.ownerId,
+            _that.createdAt,
+            _that.updatedAt);
       case _:
         return orElse();
     }
@@ -235,15 +285,31 @@ extension TaskModelPatterns on TaskModel {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String id, String title, String description,
-            bool isCompleted, TaskPriority priority)
+    TResult Function(
+            String id,
+            String title,
+            String description,
+            bool isCompleted,
+            TaskPriority priority,
+            String? groupId,
+            String ownerId,
+            DateTime? createdAt,
+            DateTime? updatedAt)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _TaskModel():
-        return $default(_that.id, _that.title, _that.description,
-            _that.isCompleted, _that.priority);
+        return $default(
+            _that.id,
+            _that.title,
+            _that.description,
+            _that.isCompleted,
+            _that.priority,
+            _that.groupId,
+            _that.ownerId,
+            _that.createdAt,
+            _that.updatedAt);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -263,15 +329,31 @@ extension TaskModelPatterns on TaskModel {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String id, String title, String description,
-            bool isCompleted, TaskPriority priority)?
+    TResult? Function(
+            String id,
+            String title,
+            String description,
+            bool isCompleted,
+            TaskPriority priority,
+            String? groupId,
+            String ownerId,
+            DateTime? createdAt,
+            DateTime? updatedAt)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _TaskModel() when $default != null:
-        return $default(_that.id, _that.title, _that.description,
-            _that.isCompleted, _that.priority);
+        return $default(
+            _that.id,
+            _that.title,
+            _that.description,
+            _that.isCompleted,
+            _that.priority,
+            _that.groupId,
+            _that.ownerId,
+            _that.createdAt,
+            _that.updatedAt);
       case _:
         return null;
     }
@@ -286,7 +368,11 @@ class _TaskModel implements TaskModel {
       required this.title,
       required this.description,
       required this.isCompleted,
-      required this.priority});
+      required this.priority,
+      this.groupId,
+      required this.ownerId,
+      this.createdAt,
+      this.updatedAt});
   factory _TaskModel.fromJson(Map<String, dynamic> json) =>
       _$TaskModelFromJson(json);
 
@@ -300,6 +386,15 @@ class _TaskModel implements TaskModel {
   final bool isCompleted;
   @override
   final TaskPriority priority;
+// Backend fields
+  @override
+  final String? groupId;
+  @override
+  final String ownerId;
+  @override
+  final DateTime? createdAt;
+  @override
+  final DateTime? updatedAt;
 
   /// Create a copy of TaskModel
   /// with the given fields replaced by the non-null parameter values.
@@ -328,17 +423,23 @@ class _TaskModel implements TaskModel {
             (identical(other.isCompleted, isCompleted) ||
                 other.isCompleted == isCompleted) &&
             (identical(other.priority, priority) ||
-                other.priority == priority));
+                other.priority == priority) &&
+            (identical(other.groupId, groupId) || other.groupId == groupId) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, description, isCompleted, priority);
+  int get hashCode => Object.hash(runtimeType, id, title, description,
+      isCompleted, priority, groupId, ownerId, createdAt, updatedAt);
 
   @override
   String toString() {
-    return 'TaskModel(id: $id, title: $title, description: $description, isCompleted: $isCompleted, priority: $priority)';
+    return 'TaskModel(id: $id, title: $title, description: $description, isCompleted: $isCompleted, priority: $priority, groupId: $groupId, ownerId: $ownerId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 }
 
@@ -355,7 +456,11 @@ abstract mixin class _$TaskModelCopyWith<$Res>
       String title,
       String description,
       bool isCompleted,
-      TaskPriority priority});
+      TaskPriority priority,
+      String? groupId,
+      String ownerId,
+      DateTime? createdAt,
+      DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -375,6 +480,10 @@ class __$TaskModelCopyWithImpl<$Res> implements _$TaskModelCopyWith<$Res> {
     Object? description = null,
     Object? isCompleted = null,
     Object? priority = null,
+    Object? groupId = freezed,
+    Object? ownerId = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_TaskModel(
       id: null == id
@@ -397,6 +506,22 @@ class __$TaskModelCopyWithImpl<$Res> implements _$TaskModelCopyWith<$Res> {
           ? _self.priority
           : priority // ignore: cast_nullable_to_non_nullable
               as TaskPriority,
+      groupId: freezed == groupId
+          ? _self.groupId
+          : groupId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ownerId: null == ownerId
+          ? _self.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: freezed == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _self.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }

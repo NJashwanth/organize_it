@@ -12,6 +12,11 @@ abstract class TaskModel with _$TaskModel {
     required String description,
     required bool isCompleted,
     required TaskPriority priority,
+    // Backend fields
+    String? groupId,
+    required String ownerId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) = _TaskModel;
 
   factory TaskModel.fromJson(Map<String, dynamic> json) =>
@@ -24,6 +29,18 @@ abstract class TaskModel with _$TaskModel {
       description: map['description'] ?? '',
       isCompleted: map['isCompleted'] ?? false,
       priority: _parsePriority(map['priority']),
+      groupId: map['groupId']?.toString(),
+      ownerId: map['ownerId']?.toString() ?? '',
+      createdAt: map['createdAt'] is DateTime
+          ? map['createdAt'] as DateTime
+          : (map['createdAt'] != null
+              ? DateTime.tryParse(map['createdAt'].toString())
+              : null),
+      updatedAt: map['updatedAt'] is DateTime
+          ? map['updatedAt'] as DateTime
+          : (map['updatedAt'] != null
+              ? DateTime.tryParse(map['updatedAt'].toString())
+              : null),
     );
   }
 }
@@ -34,7 +51,11 @@ extension TaskModelX on TaskModel {
         'title': title,
         'description': description,
         'isCompleted': isCompleted,
-        'priority': priority.index,
+        'priority': priority.name,
+        'groupId': groupId,
+        'ownerId': ownerId,
+        'createdAt': createdAt?.toUtc().toIso8601String(),
+        'updatedAt': updatedAt?.toUtc().toIso8601String(),
       };
 
   TaskEntity toEntity() {
@@ -44,6 +65,10 @@ extension TaskModelX on TaskModel {
       description: description,
       isCompleted: isCompleted,
       priority: priority,
+      groupId: groupId,
+      ownerId: ownerId,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
     );
   }
 }
