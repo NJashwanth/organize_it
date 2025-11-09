@@ -108,9 +108,9 @@ class TaskListTile extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: _priorityColor(task.priority, context)
-                              .withOpacity(
-                            task.isCompleted ? 0.6 : 0.9,
+                          color:
+                              _priorityColor(task.priority, context).withValues(
+                            alpha: task.isCompleted ? 0.6 : 0.9,
                           ),
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -130,7 +130,8 @@ class TaskListTile extends StatelessWidget {
                       if (task.isCompleted) ...[
                         Icon(
                           Icons.check_circle_outline,
-                          color: theme.colorScheme.primary.withOpacity(0.7),
+                          color:
+                              theme.colorScheme.primary.withValues(alpha: 0.7),
                           size: 16,
                         ),
                         const SizedBox(width: 4),
@@ -138,7 +139,7 @@ class TaskListTile extends StatelessWidget {
                           'Completed',
                           style: theme.textTheme.labelSmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant
-                                .withOpacity(0.8),
+                                .withValues(alpha: 0.8),
                           ),
                         ),
                       ],
@@ -156,7 +157,8 @@ class TaskListTile extends StatelessWidget {
                   child: Checkbox(
                     value: task.isCompleted,
                     onChanged: onToggleComplete,
-                    activeColor: theme.colorScheme.primary.withOpacity(0.9),
+                    activeColor:
+                        theme.colorScheme.primary.withValues(alpha: 0.9),
                     checkColor: theme.colorScheme.onPrimary,
                   ),
                 ),

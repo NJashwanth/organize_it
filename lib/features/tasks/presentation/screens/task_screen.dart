@@ -34,7 +34,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
       ),
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: tasksValue.when(
         data: (tasks) {
           if (tasks.isEmpty) {

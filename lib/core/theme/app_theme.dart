@@ -190,7 +190,7 @@ static const Color _errorDark = Color(0xFFFF8A80); // Warm coral red
         labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
       ),
       chipTheme: base.chipTheme.copyWith(
-        backgroundColor: colorScheme.surfaceVariant,
+        backgroundColor: colorScheme.surfaceContainerHighest,
         selectedColor: colorScheme.primaryContainer,
         labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
