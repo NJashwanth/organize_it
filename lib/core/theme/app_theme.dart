@@ -10,9 +10,9 @@ extension AppTextStyleX on TextTheme {
   TextStyle get header3 => displaySmall!;
 
   // Titles
-  TextStyle get title1 => titleLarge!.copyWith(fontWeight: FontWeight.w600);
-  TextStyle get title2 => titleMedium!.copyWith(fontWeight: FontWeight.w600);
-  TextStyle get title3 => titleSmall!.copyWith(fontWeight: FontWeight.w500);
+  TextStyle get title1 => titleLarge!;
+  TextStyle get title2 => titleMedium!;
+  TextStyle get title3 => titleSmall!;
 
   // Body
   TextStyle get body1 => bodyLarge!;
@@ -24,13 +24,12 @@ extension AppTextStyleX on TextTheme {
   TextStyle get label2 => labelMedium!;
   TextStyle get label3 => labelSmall!;
 
-  // Special
-  TextStyle get listTitle => titleMedium!.copyWith(fontWeight: FontWeight.w600);
+  // Special semantic styles
+  TextStyle get listTitle => titleMedium!;
   TextStyle get listDescription => bodyMedium!;
-  TextStyle get sectionHeader =>
-      titleLarge!.copyWith(fontWeight: FontWeight.bold);
+  TextStyle get sectionHeader => titleLarge!;
   TextStyle get caption => bodySmall!;
-  TextStyle get tag => labelSmall!.copyWith(fontWeight: FontWeight.w600);
+  TextStyle get tag => labelSmall!;
 }
 
 /// ================================
@@ -38,7 +37,8 @@ extension AppTextStyleX on TextTheme {
 /// ================================
 extension AppColorSchemeX on ColorScheme {
   Color get tileBackground => surface;
-  Color get completedTileBackground => surfaceContainerHighest.withValues(alpha: 0.5);
+  Color get completedTileBackground =>
+      surfaceContainerHighest.withValues(alpha: 0.5);
 
   // Text
   Color get primaryText => onSurface;
@@ -47,8 +47,9 @@ extension AppColorSchemeX on ColorScheme {
 
   // Priority
   Color get highPriority => error;
-  Color get mediumPriority => tertiary;
-  Color get lowPriority => inversePrimary;
+  Color get mediumPriority =>
+      tertiary; // Using orange color for medium priority
+  Color get lowPriority => primary;
 
   // Status
   Color get statusActive => primary;
@@ -63,16 +64,15 @@ extension AppColorSchemeX on ColorScheme {
 /// APP THEME
 /// ================================
 class AppTheme {
-static const Color _primaryLight = Color(0xFF2E8B57); // Emerald Green
-static const Color _secondaryLight = Color(0xFF66BB6A); // Mint
-static const Color _tertiaryLight = Color(0xFFDCE775); // Light Lime
-static const Color _errorLight = Color(0xFFF0625D); // Coral Red
+  static const Color _primaryLight = Color(0xFF2E8B57); // Emerald Green
+  static const Color _secondaryLight = Color(0xFF66BB6A); // Mint
+  static const Color _tertiaryLight = Color(0xFFFFA726); // Orange
+  static const Color _errorLight = Color(0xFFF0625D); // Coral Red
 
-static const Color _primaryDark = Color(0xFF81C784); // Soft green glow
-static const Color _secondaryDark = Color(0xFF388E3C); // Deep forest tone
-static const Color _tertiaryDark = Color(0xFF9CCC65); // Muted lime
-static const Color _errorDark = Color(0xFFFF8A80); // Warm coral red
-
+  static const Color _primaryDark = Color(0xFF81C784); // Soft green glow
+  static const Color _secondaryDark = Color(0xFF388E3C); // Deep forest tone
+  static const Color _tertiaryDark = Color(0xFFFFB74D); // Warm orange
+  static const Color _errorDark = Color(0xFFFF8A80); // Warm coral red
 
   // LIGHT THEME
   static ThemeData light() {
@@ -150,7 +150,73 @@ static const Color _errorDark = Color(0xFFFF8A80); // Warm coral red
 
   /// Unified base setup for both light & dark themes
   static ThemeData _baseTheme(ThemeData base, ColorScheme colorScheme) {
+    // Define the base text theme
+    var textTheme = base.textTheme;
+    textTheme = textTheme.copyWith(
+      // Display styles
+      displayLarge: textTheme.displayLarge!.copyWith(
+        fontWeight: FontWeight.w600,
+      ),
+      displayMedium: textTheme.displayMedium!.copyWith(
+        fontWeight: FontWeight.w600,
+      ),
+      displaySmall: textTheme.displaySmall!.copyWith(
+        fontWeight: FontWeight.w600,
+      ),
+
+      // Headline styles
+      headlineLarge: textTheme.headlineLarge!.copyWith(
+        fontWeight: FontWeight.w700,
+      ),
+      headlineMedium: textTheme.headlineMedium!.copyWith(
+        fontWeight: FontWeight.w600,
+      ),
+      headlineSmall: textTheme.headlineSmall!.copyWith(
+        fontWeight: FontWeight.w600,
+      ),
+
+      // Title styles
+      titleLarge: textTheme.titleLarge!.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.15,
+      ),
+      titleMedium: textTheme.titleMedium!.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.1,
+      ),
+      titleSmall: textTheme.titleSmall!.copyWith(
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.1,
+      ),
+
+      // Label styles
+      labelLarge: textTheme.labelLarge!.copyWith(
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.1,
+      ),
+      labelMedium: textTheme.labelMedium!.copyWith(
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.5,
+      ),
+      labelSmall: textTheme.labelSmall!.copyWith(
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.5,
+      ),
+
+      // Body styles
+      bodyLarge: textTheme.bodyLarge!.copyWith(
+        letterSpacing: 0.15,
+      ),
+      bodyMedium: textTheme.bodyMedium!.copyWith(
+        letterSpacing: 0.25,
+      ),
+      bodySmall: textTheme.bodySmall!.copyWith(
+        letterSpacing: 0.4,
+      ),
+    );
+
     return base.copyWith(
+      textTheme: textTheme,
       scaffoldBackgroundColor: colorScheme.surface,
       cardTheme: CardThemeData(
         elevation: 1,
