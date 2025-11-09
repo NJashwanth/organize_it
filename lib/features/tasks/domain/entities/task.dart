@@ -2,6 +2,12 @@ import 'package:equatable/equatable.dart';
 
 enum TaskPriority { high, medium, low }
 
+/// Extension helpers for TaskPriority
+extension TaskPriorityX on TaskPriority {
+  /// The canonical name expected by the backend enum (e.g. "HIGH", "MEDIUM", "LOW").
+  String get serverName => toString().split('.').last.toUpperCase();
+}
+
 /// Represents a Task as used in the Flutter front-end. Mirrors the backend model.
 class TaskEntity extends Equatable {
   final String id;
@@ -65,15 +71,28 @@ class TaskEntity extends Equatable {
     }
 
     TaskPriority parsePriority(String? p) {
-      switch (p) {
-        case 'high':
-          return TaskPriority.high;
-        case 'medium':
-          return TaskPriority.medium;
-        case 'low':
-        default:
-          return TaskPriority.low;
+      if (p == null) return TaskPriority.low;
+      final raw = p.toString();
+      final rawUpper = raw.toUpperCase();
+
+      // Accept server-side uppercase names first
+      for (final pr in TaskPriority.values) {
+        if (pr.serverName == rawUpper) return pr;
       }
+
+      // Accept lowercase / friendly names (e.g. "high", "medium", "low")
+      final rawLower = raw.toLowerCase();
+      for (final pr in TaskPriority.values) {
+        if (pr.toString().split('.').last.toLowerCase() == rawLower) return pr;
+      }
+
+      // Try numeric index
+      final idx = int.tryParse(raw);
+      if (idx != null && idx >= 0 && idx < TaskPriority.values.length) {
+        return TaskPriority.values[idx];
+      }
+
+      return TaskPriority.low;
     }
 
     return TaskEntity(
@@ -95,7 +114,8 @@ class TaskEntity extends Equatable {
         'title': title,
         'description': description,
         'isCompleted': isCompleted,
-        'priority': priority.name,
+        // Use the canonical server name defined on the enum extension
+        'priority': priority.serverName,
         'groupId': groupId,
         'ownerId': ownerId,
         'createdAt': createdAt?.toUtc().toIso8601String(),

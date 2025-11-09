@@ -51,7 +51,8 @@ extension TaskModelX on TaskModel {
         'title': title,
         'description': description,
         'isCompleted': isCompleted,
-        'priority': priority.name,
+        // Use the canonical server name provided by the TaskPriority extension.
+        'priority': priority.serverName,
         'groupId': groupId,
         'ownerId': ownerId,
         'createdAt': createdAt?.toUtc().toIso8601String(),
@@ -87,10 +88,14 @@ TaskPriority _parsePriority(dynamic raw) {
     }
   } catch (_) {}
 
-  // If it's a string, try to match by name (case-insensitive)
-  final rawStr = raw.toString().toLowerCase();
+  // If it's a string, try to match by either serverName (uppercase) or friendly name (case-insensitive)
+  final rawStr = raw.toString();
+  final rawUpper = rawStr.toUpperCase();
   for (final p in TaskPriority.values) {
-    if (p.toString().split('.').last.toLowerCase() == rawStr) {
+    if (p.serverName == rawUpper) {
+      return p;
+    }
+    if (p.toString().split('.').last.toLowerCase() == rawStr.toLowerCase()) {
       return p;
     }
   }

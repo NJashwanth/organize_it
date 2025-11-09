@@ -82,7 +82,7 @@ final class TasksProvider
   }
 }
 
-String _$tasksHash() => r'8f93d27573ab002f5e35b63ea64c6549ffa78fc8';
+String _$tasksHash() => r'04c51b9b4fd81bf444e2a8484bcf1ac5b2e98af7';
 
 abstract class _$Tasks extends $Notifier<AsyncValue<List<TaskEntity>>> {
   AsyncValue<List<TaskEntity>> build();

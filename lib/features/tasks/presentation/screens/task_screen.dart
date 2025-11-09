@@ -5,6 +5,7 @@ import '../providers/task_provider.dart';
 import '../widgets/task_edit_dialog.dart';
 import '../widgets/task_list_tile.dart';
 import 'package:organize_it/core/widgets/organize_it_loading.dart';
+import 'task_create_screen.dart';
 
 class TaskScreen extends ConsumerStatefulWidget {
   const TaskScreen({super.key});
@@ -186,6 +187,16 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          // navigate to full screen create page
+          await Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => const TaskCreateScreen(),
+          ));
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Add Task'),
       ),
     );
   }
