@@ -4,6 +4,7 @@ import 'package:organize_it/features/tasks/domain/entities/task.dart';
 import '../providers/task_provider.dart';
 import '../widgets/task_edit_dialog.dart';
 import '../widgets/task_list_tile.dart';
+import 'package:organize_it/core/widgets/organize_it_loading.dart';
 
 class TaskScreen extends ConsumerStatefulWidget {
   const TaskScreen({super.key});
@@ -157,7 +158,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
             ),
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: OrganizeItLoading()),
         error: (error, stack) => Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
