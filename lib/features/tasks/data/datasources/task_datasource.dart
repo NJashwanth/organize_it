@@ -40,6 +40,7 @@ class TaskDatasource {
       description: task.description,
       isCompleted: task.isCompleted,
       priority: task.priority,
+      ownerId: task.ownerId,
     );
     await _dioService.postRequest('/tasks', data: taskModel.toMap());
   }

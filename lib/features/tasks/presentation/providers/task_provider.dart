@@ -58,6 +58,9 @@ class Tasks extends _$Tasks {
         description: updatedTask.description,
         isCompleted: updatedTask.isCompleted,
         priority: updatedTask.priority,
+        ownerId: updatedTask.ownerId,
+        groupId: updatedTask.groupId,
+        createdAt: updatedTask.createdAt,
       );
 
       // Update the task in the repository using TaskModel
