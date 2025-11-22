@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../domain/entities/task.dart';
+import 'package:organize_it/features/tasks/domain/entities/task.dart';
 
 part 'task_model.freezed.dart';
 part 'task_model.g.dart';

@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../data/repositories/task_repository.dart';
-import '../../domain/entities/task.dart';
-import '../../data/models/task_model.dart';
+import 'package:organize_it/features/tasks/data/repositories/task_repository.dart';
+import 'package:organize_it/features/tasks/domain/entities/task.dart';
+import 'package:organize_it/features/tasks/data/models/task_model.dart';
 
 part 'task_provider.g.dart';
 
@@ -40,7 +40,7 @@ class Tasks extends _$Tasks {
       {String? title,
       String? description,
       bool? isCompleted,
-      TaskPriority? priority}) async {
+      TaskPriority? priority,}) async {
     try {
       final repository = ref.read(taskRepositoryProvider);
       // Use copyWith to update fields

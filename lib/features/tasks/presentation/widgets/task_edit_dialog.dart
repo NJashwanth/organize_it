@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/task.dart';
+import 'package:organize_it/features/tasks/domain/entities/task.dart';
 
 class TaskEditResult {
   final String title;
@@ -100,7 +100,7 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
                 borderRadius: BorderRadius.circular(12),
               ),
               prefixIcon: Icon(Icons.description,
-                  color: theme.colorScheme.onSurfaceVariant),
+                  color: theme.colorScheme.onSurfaceVariant,),
             ),
             maxLines: 3,
             textInputAction: TextInputAction.newline,

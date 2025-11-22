@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../domain/models/task_group_response.dart' as domain;
-import 'task_model.dart';
+import 'package:organize_it/features/tasks/domain/models/task_group_response.dart' as domain;
+import 'package:organize_it/features/tasks/data/models/task_model.dart';
 
 part 'task_group_response_model.freezed.dart';
 part 'task_group_response_model.g.dart';
@@ -48,7 +48,7 @@ extension TaskGroupResponseModelX on TaskGroupResponseModel {
                   ownerId: t.ownerId,
                   createdAt: t.createdAt,
                   updatedAt: t.updatedAt,
-                ))
+                ),)
             .toList(),
       );
 }

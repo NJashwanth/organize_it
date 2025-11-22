@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/entities/task.dart';
-import '../providers/task_provider.dart';
+import 'package:organize_it/features/tasks/domain/entities/task.dart';
+import 'package:organize_it/features/tasks/presentation/providers/task_provider.dart';
 
 class TaskCreateScreen extends ConsumerStatefulWidget {
   const TaskCreateScreen({super.key});
@@ -41,7 +41,6 @@ class _TaskCreateScreenState extends ConsumerState<TaskCreateScreen> {
       description: _descriptionController.text.trim(),
       isCompleted: false,
       priority: _priority,
-      groupId: null,
       ownerId: '',
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -90,7 +89,7 @@ class _TaskCreateScreenState extends ConsumerState<TaskCreateScreen> {
                     .map((p) => DropdownMenuItem(
                         value: p,
                         child:
-                            Text(p.toString().split('.').last.toUpperCase())))
+                            Text(p.toString().split('.').last.toUpperCase()),),)
                     .toList(),
                 onChanged: (v) {
                   if (v != null) setState(() => _priority = v);

@@ -8,7 +8,7 @@ class DioService {
   }
 
   Future<Response> getRequest(String endpoint,
-      {Map<String, dynamic>? queryParameters}) async {
+      {Map<String, dynamic>? queryParameters,}) async {
     try {
       final response =
           await _dio.get(endpoint, queryParameters: queryParameters);
@@ -19,7 +19,7 @@ class DioService {
   }
 
   Future<Response> postRequest(String endpoint,
-      {Map<String, dynamic>? data}) async {
+      {Map<String, dynamic>? data,}) async {
     try {
       final response = await _dio.post(endpoint, data: data);
       return response;
@@ -29,7 +29,7 @@ class DioService {
   }
 
   Future<Response> putRequest(String endpoint,
-      {Map<String, dynamic>? data}) async {
+      {Map<String, dynamic>? data,}) async {
     try {
       final response = await _dio.put(endpoint, data: data);
       return response;
@@ -39,7 +39,7 @@ class DioService {
   }
 
   Future<Response> deleteRequest(String endpoint,
-      {Map<String, dynamic>? data}) async {
+      {Map<String, dynamic>? data,}) async {
     try {
       final response = await _dio.delete(endpoint, data: data);
       return response;

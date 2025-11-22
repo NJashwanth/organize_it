@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'features/tasks/presentation/screens/task_screen.dart';
-import 'core/theme/app_theme.dart';
+import 'package:organize_it/features/tasks/presentation/screens/task_screen.dart';
+import 'package:organize_it/core/theme/app_theme.dart';
 
 // Theme mode state provider
 final themeProvider = Provider<ThemeMode>((ref) => ThemeMode.system);

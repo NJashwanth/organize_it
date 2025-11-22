@@ -1,6 +1,6 @@
 import 'package:organize_it/features/tasks/data/datasources/task_datasource.dart';
 
-import '../../domain/entities/task.dart';
+import 'package:organize_it/features/tasks/domain/entities/task.dart';
 
 class TaskRepository {
   final TaskDatasource _taskDatasource = TaskDatasource();

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../entities/task.dart';
+import 'package:organize_it/features/tasks/domain/entities/task.dart';
 
 /// Response object that contains a TaskGroup plus the expanded list of TaskEntity
 /// objects. Mirrors backend TaskGroupResponse.

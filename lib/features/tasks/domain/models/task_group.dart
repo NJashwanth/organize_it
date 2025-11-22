@@ -68,6 +68,6 @@ class TaskGroup extends Equatable {
         updatedAt,
         tasksList,
         ownerId,
-        isActive
+        isActive,
       ];
 }

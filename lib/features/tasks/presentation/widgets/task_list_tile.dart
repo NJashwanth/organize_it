@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../core/theme/app_theme.dart';
-import '../../domain/entities/task.dart';
+import 'package:organize_it/core/theme/app_theme.dart';
+import 'package:organize_it/features/tasks/domain/entities/task.dart';
 
 typedef TaskToggleCallback = void Function(bool? value);
 typedef TaskVoidCallback = void Function();
@@ -144,7 +144,7 @@ class TaskListTile extends StatelessWidget {
                         ),
                       ],
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:organize_it/features/tasks/domain/entities/task.dart';
-import '../providers/task_provider.dart';
-import '../widgets/task_edit_dialog.dart';
-import '../widgets/task_list_tile.dart';
+import 'package:organize_it/features/tasks/presentation/providers/task_provider.dart';
+import 'package:organize_it/features/tasks/presentation/widgets/task_edit_dialog.dart';
+import 'package:organize_it/features/tasks/presentation/widgets/task_list_tile.dart';
 import 'package:organize_it/core/widgets/organize_it_loading.dart';
-import 'task_create_screen.dart';
+import 'package:organize_it/features/tasks/presentation/screens/task_create_screen.dart';
 
 class TaskScreen extends ConsumerStatefulWidget {
   const TaskScreen({super.key});
@@ -32,7 +32,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
         title: Text('Tasks',
             style: theme.textTheme.titleLarge?.copyWith(
               color: theme.colorScheme.onSurface,
-            )),
+            ),),
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
       ),
@@ -104,7 +104,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
                           onEdit: () => _showEditDialog(task),
                           onDelete: () => notifier.deleteTask(task.id),
                         ),
-                      )),
+                      ),),
                 ],
 
                 // Completed Tasks Section
@@ -145,12 +145,12 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
                                   task: task,
                                   onToggleComplete: (value) {
                                     notifier.updateTask(task,
-                                        isCompleted: value);
+                                        isCompleted: value,);
                                   },
                                   onEdit: () => _showEditDialog(task),
                                   onDelete: () => notifier.deleteTask(task.id),
                                 ),
-                              ))
+                              ),)
                           .toList(),
                     ),
                   ),
@@ -167,7 +167,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.error_outline,
-                    size: 64, color: theme.colorScheme.error),
+                    size: 64, color: theme.colorScheme.error,),
                 const SizedBox(height: 12),
                 Text(
                   'Something went wrong',
@@ -193,7 +193,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
           // navigate to full screen create page
           await Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => const TaskCreateScreen(),
-          ));
+          ),);
         },
         icon: const Icon(Icons.add),
         label: const Text('Add Task'),

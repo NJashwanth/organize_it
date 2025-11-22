@@ -1,5 +1,5 @@
-import '../entities/task.dart';
-import '../../data/repositories/task_repository.dart';
+import 'package:organize_it/features/tasks/domain/entities/task.dart';
+import 'package:organize_it/features/tasks/data/repositories/task_repository.dart';
 
 class AddTaskUseCase {
   final TaskRepository repository;
