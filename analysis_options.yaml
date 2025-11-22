@@ -10,12 +10,31 @@ analyzer:
 
 linter:
   rules:
-    # --- Essential Rules for Clean Code ---
-    avoid_print: true                # Discourage print() in favor of proper logging.
-    prefer_const_constructors: true  # Use const constructors where possible.
-    prefer_const_literals_to_create_immutables: true # Use const for list/map literals.
-    annotate_overrides: true         # Require @override for overridden methods.
-    prefer_final_locals: true        # Prefer final for local variables when possible.
-    sort_child_properties_last: true # For Flutter widgets, keep 'child' at the bottom.
-    public_member_api_docs: false    # Skip enforcing docs for public APIs (optional).
-    
+    # --- Essential Rules for Clean Code (Existing) ---
+    avoid_print: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    annotate_overrides: true
+    prefer_final_locals: true
+    sort_child_properties_last: true
+    public_member_api_docs: false
+
+    # --- Safety and Correctness (New) ---
+    always_use_package_imports: true
+    use_build_context_synchronously: true
+    use_key_in_widget_constructors: true
+    require_trailing_commas: true
+    prefer_single_quotes: true
+
+    # --- Code Style and Readability (New) ---
+    prefer_final_fields: true
+    avoid_redundant_argument_values: true
+    empty_statements: true
+    prefer_conditional_assignment: true
+
+    # --- Performance and Efficiency (New) ---
+    avoid_unnecessary_containers: true
+    sized_box_for_whitespace: true
+
+errors:
+  unused_import: warning
