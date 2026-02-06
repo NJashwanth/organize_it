@@ -7,20 +7,20 @@ part of 'task_model.dart';
 // **************************************************************************
 
 _TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => _TaskModel(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      isCompleted: json['isCompleted'] as bool,
-      priority: $enumDecode(_$TaskPriorityEnumMap, json['priority']),
-      groupId: json['groupId'] as String?,
-      ownerId: json['ownerId'] as String,
-      createdAt: json['createdAt'] == null
-          ? null
-          : DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
-          ? null
-          : DateTime.parse(json['updatedAt'] as String),
-    );
+  id: json['id'] as String,
+  title: json['title'] as String,
+  description: json['description'] as String,
+  isCompleted: json['isCompleted'] as bool,
+  priority: $enumDecode(_$TaskPriorityEnumMap, json['priority']),
+  groupId: json['groupId'] as String?,
+  ownerId: json['ownerId'] as String,
+  createdAt: json['createdAt'] == null
+      ? null
+      : DateTime.parse(json['createdAt'] as String),
+  updatedAt: json['updatedAt'] == null
+      ? null
+      : DateTime.parse(json['updatedAt'] as String),
+);
 
 Map<String, dynamic> _$TaskModelToJson(_TaskModel instance) =>
     <String, dynamic>{

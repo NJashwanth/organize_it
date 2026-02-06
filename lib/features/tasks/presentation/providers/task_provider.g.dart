@@ -10,21 +10,21 @@ part of 'task_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(taskRepository)
-const taskRepositoryProvider = TaskRepositoryProvider._();
+final taskRepositoryProvider = TaskRepositoryProvider._();
 
 final class TaskRepositoryProvider
     extends $FunctionalProvider<TaskRepository, TaskRepository, TaskRepository>
     with $Provider<TaskRepository> {
-  const TaskRepositoryProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'taskRepositoryProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  TaskRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'taskRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$taskRepositoryHash();
@@ -51,20 +51,20 @@ final class TaskRepositoryProvider
 String _$taskRepositoryHash() => r'c37d339a0e4aa4f70fce2c08e907a8819818da53';
 
 @ProviderFor(Tasks)
-const tasksProvider = TasksProvider._();
+final tasksProvider = TasksProvider._();
 
 final class TasksProvider
     extends $NotifierProvider<Tasks, AsyncValue<List<TaskEntity>>> {
-  const TasksProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'tasksProvider',
-          isAutoDispose: true,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+  TasksProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'tasksProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$tasksHash();
@@ -89,14 +89,20 @@ abstract class _$Tasks extends $Notifier<AsyncValue<List<TaskEntity>>> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
-    final ref = this.ref
-        as $Ref<AsyncValue<List<TaskEntity>>, AsyncValue<List<TaskEntity>>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<AsyncValue<List<TaskEntity>>, AsyncValue<List<TaskEntity>>>,
-        AsyncValue<List<TaskEntity>>,
-        Object?,
-        Object?>;
-    element.handleValue(ref, created);
+    final ref =
+        this.ref
+            as $Ref<AsyncValue<List<TaskEntity>>, AsyncValue<List<TaskEntity>>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<List<TaskEntity>>,
+                AsyncValue<List<TaskEntity>>
+              >,
+              AsyncValue<List<TaskEntity>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
   }
 }

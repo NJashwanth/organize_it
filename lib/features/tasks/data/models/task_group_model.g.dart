@@ -17,7 +17,8 @@ _TaskGroupModel _$TaskGroupModelFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
-      tasksList: (json['tasksList'] as List<dynamic>?)
+      tasksList:
+          (json['tasksList'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
