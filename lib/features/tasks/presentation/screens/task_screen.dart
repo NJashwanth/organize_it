@@ -5,6 +5,7 @@ import 'package:organize_it/features/tasks/presentation/providers/task_provider.
 import 'package:organize_it/features/tasks/presentation/widgets/task_edit_dialog.dart';
 import 'package:organize_it/features/tasks/presentation/widgets/task_list_tile.dart';
 import 'package:organize_it/core/widgets/organize_it_loading.dart';
+import 'package:organize_it/core/widgets/organize_it_error.dart';
 import 'package:organize_it/features/tasks/presentation/screens/task_create_screen.dart';
 
 class TaskScreen extends ConsumerStatefulWidget {
@@ -165,63 +166,13 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
           );
         },
         loading: () => const Center(child: OrganizeItLoading()),
-        error: (error, stack) => Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.cloud_off_rounded,
-                  size: 64,
-                  color: theme.colorScheme.error,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'We couldn\'t load your tasks',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onSurface,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Please check your connection and try again. Your tasks are safe.',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerHighest.withValues(
-                      alpha: 0.4,
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    'Details: ${error.toString()}',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                FilledButton.icon(
-                  onPressed: () => notifier.loadTasks(),
-                  icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Try again'),
-                ),
-              ],
-            ),
-          ),
+        error: (error, stack) => OrganizeItError(
+          title: 'We couldn\'t load your tasks',
+          message:
+              'Please check your connection and try again. Your tasks are safe.',
+          details: 'Details: ${error.toString()}',
+          actionLabel: 'Try again',
+          onAction: () => notifier.loadTasks(),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
