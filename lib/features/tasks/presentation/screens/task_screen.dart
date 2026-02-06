@@ -29,10 +29,12 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tasks',
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: theme.colorScheme.onSurface,
-            ),),
+        title: Text(
+          'Tasks',
+          style: theme.textTheme.titleLarge?.copyWith(
+            color: theme.colorScheme.onSurface,
+          ),
+        ),
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
       ),
@@ -94,26 +96,28 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  ...activeTasks.map((task) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: TaskListTile(
-                          task: task,
-                          onToggleComplete: (value) {
-                            notifier.updateTask(task, isCompleted: value);
-                          },
-                          onEdit: () => _showEditDialog(task),
-                          onDelete: () => notifier.deleteTask(task.id),
-                        ),
-                      ),),
+                  ...activeTasks.map(
+                    (task) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: TaskListTile(
+                        task: task,
+                        onToggleComplete: (value) {
+                          notifier.updateTask(task, isCompleted: value);
+                        },
+                        onEdit: () => _showEditDialog(task),
+                        onDelete: () => notifier.deleteTask(task.id),
+                      ),
+                    ),
+                  ),
                 ],
 
                 // Completed Tasks Section
                 if (completedTasks.isNotEmpty) ...[
                   const SizedBox(height: 24),
                   Theme(
-                    data: Theme.of(context).copyWith(
-                      dividerColor: Colors.transparent,
-                    ),
+                    data: Theme.of(
+                      context,
+                    ).copyWith(dividerColor: Colors.transparent),
                     child: ExpansionTile(
                       title: Row(
                         children: [
@@ -135,22 +139,23 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
                       iconColor: theme.colorScheme.onSurfaceVariant,
                       collapsedIconColor: theme.colorScheme.onSurfaceVariant,
                       children: completedTasks
-                          .map((task) => Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 16.0,
-                                  right: 16.0,
-                                  bottom: 8.0,
-                                ),
-                                child: TaskListTile(
-                                  task: task,
-                                  onToggleComplete: (value) {
-                                    notifier.updateTask(task,
-                                        isCompleted: value,);
-                                  },
-                                  onEdit: () => _showEditDialog(task),
-                                  onDelete: () => notifier.deleteTask(task.id),
-                                ),
-                              ),)
+                          .map(
+                            (task) => Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16.0,
+                                right: 16.0,
+                                bottom: 8.0,
+                              ),
+                              child: TaskListTile(
+                                task: task,
+                                onToggleComplete: (value) {
+                                  notifier.updateTask(task, isCompleted: value);
+                                },
+                                onEdit: () => _showEditDialog(task),
+                                onDelete: () => notifier.deleteTask(task.id),
+                              ),
+                            ),
+                          )
                           .toList(),
                     ),
                   ),
@@ -162,26 +167,57 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
         loading: () => const Center(child: OrganizeItLoading()),
         error: (error, stack) => Center(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.error_outline,
-                    size: 64, color: theme.colorScheme.error,),
+                Icon(
+                  Icons.cloud_off_rounded,
+                  size: 64,
+                  color: theme.colorScheme.error,
+                ),
                 const SizedBox(height: 12),
                 Text(
-                  'Something went wrong',
+                  'We couldn\'t load your tasks',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.error,
-                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.w700,
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                Text(error.toString()),
+                Text(
+                  'Please check your connection and try again. Your tasks are safe.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                 const SizedBox(height: 12),
-                ElevatedButton(
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.4,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'Details: ${error.toString()}',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                FilledButton.icon(
                   onPressed: () => notifier.loadTasks(),
-                  child: const Text('Retry'),
+                  icon: const Icon(Icons.refresh_rounded),
+                  label: const Text('Try again'),
                 ),
               ],
             ),
@@ -191,9 +227,9 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           // navigate to full screen create page
-          await Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => const TaskCreateScreen(),
-          ),);
+          await Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (_) => const TaskCreateScreen()));
         },
         icon: const Icon(Icons.add),
         label: const Text('Add Task'),
