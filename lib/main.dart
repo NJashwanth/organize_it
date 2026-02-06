@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:organize_it/features/tasks/presentation/screens/task_screen.dart';
+import 'package:organize_it/features/splash/presentation/splash_screen.dart';
 import 'package:organize_it/core/theme/app_theme.dart';
 
 // Theme mode state provider
@@ -26,7 +26,7 @@ class MyApp extends ConsumerWidget {
       themeMode: themeMode,
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
-      home: const TaskScreen(),
+      home: const SplashScreen(),
     );
   }
 }
