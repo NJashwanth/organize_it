@@ -34,30 +34,30 @@ abstract class TaskModel with _$TaskModel {
       createdAt: map['createdAt'] is DateTime
           ? map['createdAt'] as DateTime
           : (map['createdAt'] != null
-              ? DateTime.tryParse(map['createdAt'].toString())
-              : null),
+                ? DateTime.tryParse(map['createdAt'].toString())
+                : null),
       updatedAt: map['updatedAt'] is DateTime
           ? map['updatedAt'] as DateTime
           : (map['updatedAt'] != null
-              ? DateTime.tryParse(map['updatedAt'].toString())
-              : null),
+                ? DateTime.tryParse(map['updatedAt'].toString())
+                : null),
     );
   }
 }
 
-// Extension for custom methods
+// Extension for custom mapping methods.
 extension TaskModelX on TaskModel {
   Map<String, dynamic> toMap() => {
-        'title': title,
-        'description': description,
-        'isCompleted': isCompleted,
-        // Use the canonical server name provided by the TaskPriority extension.
-        'priority': priority.serverName,
-        'groupId': groupId,
-        'ownerId': ownerId,
-        'createdAt': createdAt?.toUtc().toIso8601String(),
-        'updatedAt': updatedAt?.toUtc().toIso8601String(),
-      };
+    'title': title,
+    'description': description,
+    'isCompleted': isCompleted,
+    // Use the canonical server name provided by the TaskPriority extension.
+    'priority': priority.serverName,
+    'groupId': groupId,
+    'ownerId': ownerId,
+    'createdAt': createdAt?.toUtc().toIso8601String(),
+    'updatedAt': updatedAt?.toUtc().toIso8601String(),
+  };
 
   TaskEntity toEntity() {
     return TaskEntity(
@@ -74,7 +74,7 @@ extension TaskModelX on TaskModel {
   }
 }
 
-// Helper to robustly parse priority values coming from various backend formats
+// Helper to robustly parse priority values coming from various backend formats.
 TaskPriority _parsePriority(dynamic raw) {
   if (raw == null) return TaskPriority.low;
 
