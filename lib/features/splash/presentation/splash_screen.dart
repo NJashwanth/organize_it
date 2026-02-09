@@ -12,6 +12,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
+  // Entry animations for the logo and subtitle dots.
   late final AnimationController _controller;
   late final Animation<double> _fade;
   late final Animation<double> _scale;
@@ -36,6 +37,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
+    // Keep splash visible briefly, then navigate to the task list.
     Future.delayed(const Duration(milliseconds: 2400), _goNext);
   }
 
@@ -91,10 +93,7 @@ class _SplashScreenState extends State<SplashScreen>
                   opacity: _fade.value,
                   child: Transform.translate(
                     offset: Offset(0, _slide.value),
-                    child: Transform.scale(
-                      scale: _scale.value,
-                      child: child,
-                    ),
+                    child: Transform.scale(scale: _scale.value, child: child),
                   ),
                 );
               },
@@ -149,10 +148,7 @@ class _LogoBadge extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            colors.primary,
-            colors.secondary,
-          ],
+          colors: [colors.primary, colors.secondary],
         ),
         boxShadow: [
           BoxShadow(
@@ -190,6 +186,7 @@ class _AnimatedDots extends StatelessWidget {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: List.generate(3, (index) {
+            // Offset each dot so the pulse travels left-to-right.
             final phase = (controller.value * 2 * math.pi) + (index * 0.7);
             final scale = 0.7 + (math.sin(phase) + 1) / 4;
             final opacity = 0.4 + (math.sin(phase) + 1) / 3;
