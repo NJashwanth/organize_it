@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:organize_it/features/tasks/domain/entities/task.dart';
 
+// ================================
+// EDIT TASK DIALOG
+// ================================
 class TaskEditResult {
   final String title;
   final String description;
@@ -23,6 +26,7 @@ class TaskEditDialog extends StatefulWidget {
 }
 
 class _TaskEditDialogState extends State<TaskEditDialog> {
+  // Form controllers for editing an existing task.
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
   TaskPriority? _selectedPriority;
@@ -31,8 +35,9 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.task.title);
-    _descriptionController =
-        TextEditingController(text: widget.task.description);
+    _descriptionController = TextEditingController(
+      text: widget.task.description,
+    );
     _selectedPriority = widget.task.priority;
   }
 
@@ -81,8 +86,10 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              prefixIcon:
-                  Icon(Icons.title, color: theme.colorScheme.onSurfaceVariant),
+              prefixIcon: Icon(
+                Icons.title,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
             validator: (v) =>
                 v == null || v.trim().isEmpty ? 'Title is required' : null,
@@ -99,8 +106,10 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              prefixIcon: Icon(Icons.description,
-                  color: theme.colorScheme.onSurfaceVariant,),
+              prefixIcon: Icon(
+                Icons.description,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
             maxLines: 3,
             textInputAction: TextInputAction.newline,
@@ -115,15 +124,17 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              prefixIcon:
-                  Icon(Icons.flag, color: theme.colorScheme.onSurfaceVariant),
+              prefixIcon: Icon(
+                Icons.flag,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
             items: TaskPriority.values.map((p) {
               final color = p == TaskPriority.high
                   ? theme.colorScheme.error
                   : p == TaskPriority.medium
-                      ? theme.colorScheme.tertiary
-                      : theme.colorScheme.primary;
+                  ? theme.colorScheme.tertiary
+                  : theme.colorScheme.primary;
               return DropdownMenuItem(
                 value: p,
                 child: Row(
@@ -199,6 +210,7 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
       );
     }
 
+    // Use a full-screen dialog on compact screens for better ergonomics.
     return isSmallScreen
         ? Dialog.fullscreen(
             child: Scaffold(
