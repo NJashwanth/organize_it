@@ -5,9 +5,14 @@ import 'package:organize_it/features/tasks/data/models/task_model.dart';
 
 part 'task_provider.g.dart';
 
+// ================================
+// STATE MANAGEMENT
+// ================================
+// Repository provider for dependency injection.
 @riverpod
 TaskRepository taskRepository(Ref ref) => TaskRepository();
 
+// Tasks state notifier for loading and mutations.
 @riverpod
 class Tasks extends _$Tasks {
   @override
@@ -16,6 +21,7 @@ class Tasks extends _$Tasks {
   }
 
   Future<void> loadTasks() async {
+    // Refresh state while fetching from the repository.
     state = const AsyncValue.loading();
     try {
       final repository = ref.read(taskRepositoryProvider);
@@ -36,14 +42,16 @@ class Tasks extends _$Tasks {
     }
   }
 
-  Future<void> updateTask(TaskEntity task,
-      {String? title,
-      String? description,
-      bool? isCompleted,
-      TaskPriority? priority,}) async {
+  Future<void> updateTask(
+    TaskEntity task, {
+    String? title,
+    String? description,
+    bool? isCompleted,
+    TaskPriority? priority,
+  }) async {
     try {
       final repository = ref.read(taskRepositoryProvider);
-      // Use copyWith to update fields
+      // Use copyWith to update fields locally before persisting.
       final updatedTask = task.copyWith(
         title: title ?? task.title,
         description: description ?? task.description,
@@ -51,7 +59,7 @@ class Tasks extends _$Tasks {
         priority: priority ?? task.priority,
       );
 
-      // Convert TaskEntity to TaskModel
+      // Convert TaskEntity to TaskModel.
       final TaskModel taskModel = TaskModel(
         id: updatedTask.id,
         title: updatedTask.title,
