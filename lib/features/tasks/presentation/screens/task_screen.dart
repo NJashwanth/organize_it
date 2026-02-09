@@ -8,6 +8,9 @@ import 'package:organize_it/core/widgets/organize_it_loading.dart';
 import 'package:organize_it/core/widgets/organize_it_error.dart';
 import 'package:organize_it/features/tasks/presentation/screens/task_create_screen.dart';
 
+// ================================
+// TASKS SCREEN
+// ================================
 class TaskScreen extends ConsumerStatefulWidget {
   const TaskScreen({super.key});
 
@@ -19,6 +22,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
   @override
   void initState() {
     super.initState();
+    // Defer fetch until after first build to avoid blocking initState.
     Future.microtask(() => ref.read(tasksProvider.notifier).loadTasks());
   }
 
@@ -42,6 +46,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
       backgroundColor: theme.colorScheme.surface,
       body: tasksValue.when(
         data: (tasks) {
+          // Empty state when no tasks are returned.
           if (tasks.isEmpty) {
             return Center(
               child: Column(
@@ -64,7 +69,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen> {
             );
           }
 
-          // Split tasks into active and completed
+          // Split tasks into active and completed lists for display.
           final activeTasks = tasks.where((t) => !t.isCompleted).toList()
             ..sort((a, b) => b.priority.index.compareTo(a.priority.index));
           final completedTasks = tasks.where((t) => t.isCompleted).toList()
