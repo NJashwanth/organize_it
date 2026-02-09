@@ -32,6 +32,7 @@ class TaskGroup extends Equatable {
       }
     }
 
+    // Ensure tasksList is always a list of string ids.
     final List<dynamic>? raw = json['tasksList'] as List<dynamic>?;
 
     return TaskGroup(
@@ -49,25 +50,25 @@ class TaskGroup extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'description': description,
-        'createdAt': createdAt?.toUtc().toIso8601String(),
-        'updatedAt': updatedAt?.toUtc().toIso8601String(),
-        'tasksList': tasksList,
-        'ownerId': ownerId,
-        'isActive': isActive,
-      };
+    'id': id,
+    'name': name,
+    'description': description,
+    'createdAt': createdAt?.toUtc().toIso8601String(),
+    'updatedAt': updatedAt?.toUtc().toIso8601String(),
+    'tasksList': tasksList,
+    'ownerId': ownerId,
+    'isActive': isActive,
+  };
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        description,
-        createdAt,
-        updatedAt,
-        tasksList,
-        ownerId,
-        isActive,
-      ];
+    id,
+    name,
+    description,
+    createdAt,
+    updatedAt,
+    tasksList,
+    ownerId,
+    isActive,
+  ];
 }
