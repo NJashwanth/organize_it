@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Branded error state with optional details and retry action.
 class OrganizeItError extends StatelessWidget {
   const OrganizeItError({
     super.key,
@@ -51,6 +52,7 @@ class OrganizeItError extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
+            // Optional error details block for debugging or support.
             if (details != null && details!.trim().isNotEmpty) ...[
               const SizedBox(height: 12),
               Container(
@@ -71,6 +73,7 @@ class OrganizeItError extends StatelessWidget {
                 ),
               ),
             ],
+            // Primary recovery action (e.g. retry).
             if (onAction != null && actionLabel != null) ...[
               const SizedBox(height: 16),
               FilledButton.icon(
