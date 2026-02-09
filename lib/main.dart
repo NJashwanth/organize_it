@@ -3,16 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:organize_it/features/splash/presentation/splash_screen.dart';
 import 'package:organize_it/core/theme/app_theme.dart';
 
-// Theme mode state provider
+// ================================
+// PROVIDERS
+// ================================
 final themeProvider = Provider<ThemeMode>((ref) => ThemeMode.system);
 
+// ================================
+// APP ENTRY
+// ================================
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Run the app with Riverpod's ProviderScope
   runApp(const ProviderScope(child: MyApp()));
 }
 
+// ================================
+// ROOT WIDGET
+// ================================
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
@@ -23,7 +29,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'OrganizeIt',
-      themeMode: themeMode,
+      themeMode: themeMode, // Allows switching between system/light/dark
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       home: const SplashScreen(),
