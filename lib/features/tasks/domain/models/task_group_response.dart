@@ -30,6 +30,7 @@ class TaskGroupResponse extends Equatable {
       }
     }
 
+    // Expand nested task payloads into domain entities.
     final List<dynamic>? rawTasks = json['tasks'] as List<dynamic>?;
 
     return TaskGroupResponse(
@@ -40,22 +41,28 @@ class TaskGroupResponse extends Equatable {
       updatedAt: parseDt(json['updatedAt']),
       tasks: rawTasks != null
           ? rawTasks
-              .map((e) => TaskEntity.fromJson(e as Map<String, dynamic>))
-              .toList()
+                .map((e) => TaskEntity.fromJson(e as Map<String, dynamic>))
+                .toList()
           : const [],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'description': description,
-        'createdAt': createdAt?.toUtc().toIso8601String(),
-        'updatedAt': updatedAt?.toUtc().toIso8601String(),
-        'tasks': tasks.map((t) => t.toJson()).toList(),
-      };
+    'id': id,
+    'name': name,
+    'description': description,
+    'createdAt': createdAt?.toUtc().toIso8601String(),
+    'updatedAt': updatedAt?.toUtc().toIso8601String(),
+    'tasks': tasks.map((t) => t.toJson()).toList(),
+  };
 
   @override
-  List<Object?> get props =>
-      [id, name, description, createdAt, updatedAt, tasks];
+  List<Object?> get props => [
+    id,
+    name,
+    description,
+    createdAt,
+    updatedAt,
+    tasks,
+  ];
 }
