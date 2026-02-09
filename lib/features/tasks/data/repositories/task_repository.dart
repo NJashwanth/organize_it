@@ -1,8 +1,11 @@
 import 'package:organize_it/features/tasks/data/datasources/task_datasource.dart';
-
 import 'package:organize_it/features/tasks/domain/entities/task.dart';
 
+// ================================
+// REPOSITORY
+// ================================
 class TaskRepository {
+  // Data source bridges API calls and domain entities.
   final TaskDatasource _taskDatasource = TaskDatasource();
   Future<List<TaskEntity>> getTasks() async {
     return await _taskDatasource.getTasks();
@@ -20,10 +23,8 @@ class TaskRepository {
     return await _taskDatasource.deleteTask(id);
   }
 
-  // get task by id
+  // Fetch a single task by id.
   Future<TaskEntity?> getTaskById(String id) async {
-   return await _taskDatasource.getTaskById(id);
+    return await _taskDatasource.getTaskById(id);
   }
-
-
 }
