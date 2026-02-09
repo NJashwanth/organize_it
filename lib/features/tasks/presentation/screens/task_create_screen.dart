@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:organize_it/features/tasks/domain/entities/task.dart';
 import 'package:organize_it/features/tasks/presentation/providers/task_provider.dart';
 
+// ================================
+// CREATE TASK SCREEN
+// ================================
 class TaskCreateScreen extends ConsumerStatefulWidget {
   const TaskCreateScreen({super.key});
 
@@ -12,6 +15,7 @@ class TaskCreateScreen extends ConsumerStatefulWidget {
 
 class _TaskCreateScreenState extends ConsumerState<TaskCreateScreen> {
   final _formKey = GlobalKey<FormState>();
+  // Controllers for task fields.
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
   TaskPriority _priority = TaskPriority.low;
@@ -31,6 +35,7 @@ class _TaskCreateScreenState extends ConsumerState<TaskCreateScreen> {
   }
 
   Future<void> _submit() async {
+    // Validate form before submitting to the repository.
     if (!_formKey.currentState!.validate()) return;
 
     final notifier = ref.read(tasksProvider.notifier);
@@ -86,10 +91,12 @@ class _TaskCreateScreenState extends ConsumerState<TaskCreateScreen> {
                 initialValue: _priority,
                 decoration: const InputDecoration(labelText: 'Priority'),
                 items: TaskPriority.values
-                    .map((p) => DropdownMenuItem(
+                    .map(
+                      (p) => DropdownMenuItem(
                         value: p,
-                        child:
-                            Text(p.toString().split('.').last.toUpperCase()),),)
+                        child: Text(p.toString().split('.').last.toUpperCase()),
+                      ),
+                    )
                     .toList(),
                 onChanged: (v) {
                   if (v != null) setState(() => _priority = v);
