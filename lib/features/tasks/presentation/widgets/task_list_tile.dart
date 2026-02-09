@@ -5,6 +5,9 @@ import 'package:organize_it/features/tasks/domain/entities/task.dart';
 typedef TaskToggleCallback = void Function(bool? value);
 typedef TaskVoidCallback = void Function();
 
+// ================================
+// TASK TILE
+// ================================
 /// Reusable tile for displaying a TaskEntity with improved visuals.
 class TaskListTile extends StatelessWidget {
   final TaskEntity task;
@@ -48,8 +51,9 @@ class TaskListTile extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color:
-              task.isCompleted ? colors.completedTileBorder : colors.tileBorder,
+          color: task.isCompleted
+              ? colors.completedTileBorder
+              : colors.tileBorder,
           width: task.isCompleted ? 1 : 0.5,
         ),
       ),
@@ -81,9 +85,7 @@ class TaskListTile extends StatelessWidget {
                             decoration: TextDecoration.lineThrough,
                             color: colors.statusCompleted,
                           )
-                        : texts.listTitle.copyWith(
-                            color: colors.primaryText,
-                          ),
+                        : texts.listTitle.copyWith(color: colors.primaryText),
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 6),
@@ -108,10 +110,10 @@ class TaskListTile extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color:
-                              _priorityColor(task.priority, context).withValues(
-                            alpha: task.isCompleted ? 0.6 : 0.9,
-                          ),
+                          color: _priorityColor(
+                            task.priority,
+                            context,
+                          ).withValues(alpha: task.isCompleted ? 0.6 : 0.9),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
@@ -130,8 +132,9 @@ class TaskListTile extends StatelessWidget {
                       if (task.isCompleted) ...[
                         Icon(
                           Icons.check_circle_outline,
-                          color:
-                              theme.colorScheme.primary.withValues(alpha: 0.7),
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: 0.7,
+                          ),
                           size: 16,
                         ),
                         const SizedBox(width: 4),
@@ -157,8 +160,9 @@ class TaskListTile extends StatelessWidget {
                   child: Checkbox(
                     value: task.isCompleted,
                     onChanged: onToggleComplete,
-                    activeColor:
-                        theme.colorScheme.primary.withValues(alpha: 0.9),
+                    activeColor: theme.colorScheme.primary.withValues(
+                      alpha: 0.9,
+                    ),
                     checkColor: theme.colorScheme.onPrimary,
                   ),
                 ),
