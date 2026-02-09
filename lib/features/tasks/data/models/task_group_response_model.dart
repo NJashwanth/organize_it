@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:organize_it/features/tasks/domain/models/task_group_response.dart' as domain;
+import 'package:organize_it/features/tasks/domain/models/task_group_response.dart'
+    as domain;
 import 'package:organize_it/features/tasks/data/models/task_model.dart';
 
 part 'task_group_response_model.freezed.dart';
@@ -20,15 +21,16 @@ abstract class TaskGroupResponseModel with _$TaskGroupResponseModel {
       _$TaskGroupResponseModelFromJson(json);
 }
 
+// Mapping helpers between data model and domain entity.
 extension TaskGroupResponseModelX on TaskGroupResponseModel {
   domain.TaskGroupResponse toDomain() => domain.TaskGroupResponse(
-        id: id,
-        name: name,
-        description: description,
-        createdAt: createdAt,
-        updatedAt: updatedAt,
-        tasks: tasks.map((t) => t.toEntity()).toList(),
-      );
+    id: id,
+    name: name,
+    description: description,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+    tasks: tasks.map((t) => t.toEntity()).toList(),
+  );
 
   static TaskGroupResponseModel fromDomain(domain.TaskGroupResponse r) =>
       TaskGroupResponseModel(
@@ -38,17 +40,19 @@ extension TaskGroupResponseModelX on TaskGroupResponseModel {
         createdAt: r.createdAt,
         updatedAt: r.updatedAt,
         tasks: r.tasks
-            .map((t) => TaskModel(
-                  id: t.id,
-                  title: t.title,
-                  description: t.description,
-                  isCompleted: t.isCompleted,
-                  priority: t.priority,
-                  groupId: t.groupId,
-                  ownerId: t.ownerId,
-                  createdAt: t.createdAt,
-                  updatedAt: t.updatedAt,
-                ),)
+            .map(
+              (t) => TaskModel(
+                id: t.id,
+                title: t.title,
+                description: t.description,
+                isCompleted: t.isCompleted,
+                priority: t.priority,
+                groupId: t.groupId,
+                ownerId: t.ownerId,
+                createdAt: t.createdAt,
+                updatedAt: t.updatedAt,
+              ),
+            )
             .toList(),
       );
 }
