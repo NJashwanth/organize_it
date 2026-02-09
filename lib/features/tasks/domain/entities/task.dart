@@ -75,6 +75,7 @@ class TaskEntity extends Equatable {
       final raw = p.toString();
       final rawUpper = raw.toUpperCase();
 
+      // Prefer server enum values (e.g. "HIGH") to avoid locale issues.
       // Accept server-side uppercase names first
       for (final pr in TaskPriority.values) {
         if (pr.serverName == rawUpper) return pr;
@@ -110,28 +111,28 @@ class TaskEntity extends Equatable {
 
   /// Serialize to JSON suitable for sending to backend.
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'description': description,
-        'isCompleted': isCompleted,
-        // Use the canonical server name defined on the enum extension
-        'priority': priority.serverName,
-        'groupId': groupId,
-        'ownerId': ownerId,
-        'createdAt': createdAt?.toUtc().toIso8601String(),
-        'updatedAt': updatedAt?.toUtc().toIso8601String(),
-      };
+    'id': id,
+    'title': title,
+    'description': description,
+    'isCompleted': isCompleted,
+    // Use the canonical server name defined on the enum extension
+    'priority': priority.serverName,
+    'groupId': groupId,
+    'ownerId': ownerId,
+    'createdAt': createdAt?.toUtc().toIso8601String(),
+    'updatedAt': updatedAt?.toUtc().toIso8601String(),
+  };
 
   @override
   List<Object?> get props => <Object?>[
-        id,
-        title,
-        description,
-        isCompleted,
-        priority,
-        groupId,
-        ownerId,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    title,
+    description,
+    isCompleted,
+    priority,
+    groupId,
+    ownerId,
+    createdAt,
+    updatedAt,
+  ];
 }
