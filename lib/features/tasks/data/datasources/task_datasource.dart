@@ -6,7 +6,10 @@ import 'package:organize_it/services/dio_service.dart';
 // REMOTE DATA SOURCE
 // ================================
 class TaskDatasource {
-  final DioService _dioService = DioService();
+  final DioService _dioService;
+
+  TaskDatasource({DioService? dioService})
+    : _dioService = dioService ?? DioService();
 
   Future<List<TaskEntity>> getTasks() async {
     try {

@@ -1,6 +1,6 @@
 {
     "configurations": [
-    {
+        {
         "name": "Flutter Run",
         "type": "dart",
         "request": "launch",

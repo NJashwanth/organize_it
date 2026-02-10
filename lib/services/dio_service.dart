@@ -4,12 +4,14 @@ import 'package:dio/dio.dart';
 // NETWORK LAYER
 // ================================
 class DioService {
-  final Dio _dio = Dio();
+  final Dio _dio;
 
-  DioService() {
+  DioService({Dio? dio, String? baseUrl}) : _dio = dio ?? Dio() {
     // Local API base URL; swap for prod using env config when available.
-    _dio.options.baseUrl = 'http://localhost:8080';
+    _dio.options.baseUrl = baseUrl ?? 'http://localhost:8080';
   }
+
+  String get baseUrl => _dio.options.baseUrl;
 
   Future<Response> getRequest(
     String endpoint, {
