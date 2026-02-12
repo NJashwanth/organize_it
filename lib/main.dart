@@ -29,7 +29,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'OrganizeIt',
-      themeMode: themeMode, // Allows switching between system/light/dark
+      themeMode: themeMode,
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       home: const SplashScreen(),
