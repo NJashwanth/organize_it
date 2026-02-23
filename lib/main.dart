@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lifecycle_logger/lifecycle_logger.dart';
 import 'package:organize_it/features/splash/presentation/splash_screen.dart';
 import 'package:organize_it/core/theme/app_theme.dart';
 
@@ -13,6 +14,7 @@ final themeProvider = Provider<ThemeMode>((ref) => ThemeMode.system);
 // ================================
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  LifecycleLogger.attach();
   runApp(const ProviderScope(child: MyApp()));
 }
 
