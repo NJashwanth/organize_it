@@ -1,16 +1,67 @@
-# organize_it
+# OrganizeIt
 
-OrganizeIt is your ultimate task management companion, designed to simplify your life and boost productivity. With features like smart categorization, customizable reminders, and a sleek interface, OrganizeIt helps you stay on top of your tasks and plans effortlessly. Whether it's personal goals or professional projects, OrganizeIt ensures everything is neatly organized in one place.
+OrganizeIt is a Flutter task management app designed to help you organize goals, tasks, and daily plans in a clean, fast, and focused experience.
 
-## Getting Started
+## Tech Stack
 
-This project is a starting point for a Flutter application.
+- Flutter (Material)
+- Riverpod (`flutter_riverpod`) for state management
+- Dio for networking
+- Freezed + JSON Serializable for models
+- `lifecycle_logger` for app lifecycle event logging
 
-A few resources to get you started if this is your first Flutter project:
+## Project Structure
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- `lib/core` → shared theme, constants, utilities
+- `lib/features` → feature-first modules (data/domain/presentation)
+- `lib/services` → app-wide services (for example, Dio setup)
+- `test` → unit and widget tests
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Run Locally
+
+1. Install Flutter SDK (stable channel)
+2. Get dependencies:
+
+```bash
+flutter pub get
+```
+
+3. Run app:
+
+```bash
+flutter run
+```
+
+4. Run tests:
+
+```bash
+flutter test
+```
+
+## Lifecycle Logging
+
+App lifecycle logging is enabled at startup in `main()` using:
+
+```dart
+LifecycleLogger.attach();
+```
+
+This helps track `resumed`, `paused`, `inactive`, and `detached` transitions during development.
+
+## Public Repository Safety
+
+Before pushing changes, ensure sensitive and generated files are not tracked:
+
+- `.env` and `.env.*`
+- `android/local.properties`
+- `android/key.properties`
+- `google-services.json`
+- `GoogleService-Info.plist`
+- signing keys (`*.jks`, `*.keystore`, `*.pem`, `*.p8`, `*.p12`)
+- generated folders (`android/build/`, `ios/Pods/`, `ios/Flutter/ephemeral/`)
+
+Use this quick check:
+
+```bash
+git ls-files | egrep -i '(.env|key.properties|local.properties|google-services.json|GoogleService-Info.plist|\.jks|\.keystore|\.pem|\.p8|\.p12)$'
+```
