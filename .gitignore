@@ -44,6 +44,24 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Generated platform artifacts
+/android/build/
+/ios/Pods/
+/ios/Flutter/ephemeral/
+
+# Local secrets / signing material
+.env
+.env.*
+google-services.json
+GoogleService-Info.plist
+android/key.properties
+android/local.properties
+*.jks
+*.keystore
+*.p8
+*.p12
+*.pem
+
 
 
 # Spring boot
