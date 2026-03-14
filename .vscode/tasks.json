@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start Mock Server",
+            "type": "shell",
+            "command": "dart run flutter_mock_server start",
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^$"
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^Mock server",
+                    "endsPattern": "^Mock server listening"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "label": "Mock Server"
+            }
+        }
+    ]
+}
