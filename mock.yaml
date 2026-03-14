@@ -1,0 +1,171 @@
+# organize_it – development mock server
+# ──────────────────────────────────────
+# Start: dart run flutter_mock_server start
+# The app's DioService defaults to http://localhost:8080 — no extra config needed.
+#
+# Feature overview used here:
+#   models      – schema-driven fake data (uuid, word, sentence, bool, enum, timestamp, array)
+#   stores      – deterministic in-memory collections seeded from models
+#   seed        – fixed seed so generated data is identical on every reload
+#   CRUD routes – list / get / create / update / delete backed by a store
+#   filtering   – ?priority=HIGH  ?isCompleted=true  (any non-reserved query key)
+#   sorting     – ?sort=title&order=asc|desc
+#   pagination  – ?limit=5&page=2
+#   static body – inline body with template bindings ({{uuid}}, {{request.body.X}})
+#   headers     – custom response headers
+#   delay_ms    – artificial latency for simulating slow networks
+#   error       – probabilistic error injection (raise `rate` to 0.0–1.0)
+
+seed: 42
+
+models:
+  Task:
+    id: uuid
+    title: word
+    description: sentence
+    isCompleted: bool
+    priority:
+      enum: [HIGH, MEDIUM, LOW]
+    ownerId: uuid
+    createdAt: timestamp
+    updatedAt: timestamp
+
+  TaskGroup:
+    id: uuid
+    name: word
+    description: sentence
+    ownerId: uuid
+    isActive: bool
+    tasksList:
+      type: array
+      items: uuid
+      count: 3
+    createdAt: timestamp
+    updatedAt: timestamp
+
+stores:
+  tasks:
+    model: Task
+    count: 12
+
+  task_groups:
+    model: TaskGroup
+    count: 5
+
+routes:
+  # ── Tasks ─────────────────────────────────────────────────────────────────
+  # Supports arbitrary field filters, e.g.:
+  #   ?priority=HIGH
+  #   ?isCompleted=true
+  #   ?sort=title&order=asc&limit=5&page=1
+  - path: /tasks
+    method: GET
+    action: list
+    store: tasks
+
+  - path: /tasks/:id
+    method: GET
+    action: get
+    store: tasks
+
+  - path: /tasks
+    method: POST
+    action: create
+    store: tasks
+
+  - path: /tasks/:id
+    method: PUT
+    action: update
+    store: tasks
+
+  - path: /tasks/:id
+    method: DELETE
+    action: delete
+    store: tasks
+
+  # ── Task Groups ───────────────────────────────────────────────────────────
+  - path: /task-groups
+    method: GET
+    action: list
+    store: task_groups
+
+  - path: /task-groups/:id
+    method: GET
+    action: get
+    store: task_groups
+
+  - path: /task-groups
+    method: POST
+    action: create
+    store: task_groups
+
+  - path: /task-groups/:id
+    method: PUT
+    action: update
+    store: task_groups
+
+  - path: /task-groups/:id
+    method: DELETE
+    action: delete
+    store: task_groups
+
+  # ── Auth ──────────────────────────────────────────────────────────────────
+  # Template bindings populate token/userId from generated UUIDs and email
+  # from the incoming request body.
+  # Raise `error.rate` to 0.0–1.0 to simulate 401 failures during development.
+  - path: /session
+    method: POST
+    response:
+      status: 201
+      headers:
+        Access-Control-Allow-Origin: "*"
+        Access-Control-Allow-Methods: "GET, POST, PUT, DELETE"
+        Access-Control-Allow-Headers: "Content-Type, Authorization"
+      body:
+        token: "{{uuid}}"
+        userId: "{{uuid}}"
+        message: Signed in
+        email: "{{request.body.email}}"
+      error:
+        status: 401
+        rate: 0.0
+        body:
+          message: Unauthorized
+
+  # ── Health ────────────────────────────────────────────────────────────────
+  - path: /health
+    method: GET
+    response:
+      status: 200
+      headers:
+        Access-Control-Allow-Origin: "*"
+        x-server: flutter-mock-server
+      body:
+        status: ok
+        version: "1.0.0"
+        environment: development
+
+  # ── Test / development utilities ──────────────────────────────────────────
+  - path: /test/always-error
+    method: GET
+    response:
+      status: 200
+      headers:
+        Access-Control-Allow-Origin: "*"
+      body:
+        ok: true
+      error:
+        status: 503
+        rate: 1.0
+        body:
+          message: Simulated server error
+
+  - path: /test/delayed
+    method: GET
+    response:
+      status: 200
+      headers:
+        Access-Control-Allow-Origin: "*"
+      body:
+        ok: true
+      delay_ms: 50
