@@ -45,8 +45,8 @@ class _SplashScreenState extends State<SplashScreen>
     if (!mounted) return;
     await Navigator.of(context).pushReplacement(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => const TaskScreen(),
-        transitionsBuilder: (_, animation, __, child) {
+        pageBuilder: (_, _, _) => const TaskScreen(),
+        transitionsBuilder: (_, animation, _, child) {
           final fade = CurvedAnimation(
             parent: animation,
             curve: Curves.easeOut,
