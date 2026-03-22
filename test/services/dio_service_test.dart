@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:organize_it/services/dio_service.dart';
 
 class _FakeDio extends Fake implements Dio {}

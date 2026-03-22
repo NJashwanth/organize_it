@@ -90,8 +90,8 @@ void main() {
         overrides: [
           tasksProvider.overrideWith(
             () => _StaticTasksNotifier(
-              AsyncValue.data([
-                const TaskEntity(
+              const AsyncValue.data([
+                TaskEntity(
                   id: '1',
                   title: 'A',
                   description: 'B',

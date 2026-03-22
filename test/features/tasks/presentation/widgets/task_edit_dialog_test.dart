@@ -16,7 +16,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(body: TaskEditDialog(task: task)),
         ),
       );
@@ -46,7 +46,7 @@ void main() {
                     onPressed: () async {
                       result = await showDialog<TaskEditResult>(
                         context: context,
-                        builder: (_) => TaskEditDialog(task: task),
+                        builder: (_) => const TaskEditDialog(task: task),
                       );
                     },
                     child: const Text('Open'),
