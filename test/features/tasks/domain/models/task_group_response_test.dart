@@ -26,7 +26,7 @@ void main() {
     });
 
     test('toJson serializes tasks', () {
-      final response = TaskGroupResponse.fromJson({
+      final response = TaskGroupResponse.fromJson(const {
         'id': '1',
         'name': 'Group',
         'tasks': [
