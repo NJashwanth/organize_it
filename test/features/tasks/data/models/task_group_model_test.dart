@@ -27,7 +27,6 @@ void main() {
         name: 'Group',
         ownerId: 'user',
         tasksList: ['a'],
-        isActive: true,
       );
 
       final model = TaskGroupModelX.fromDomain(entity);
